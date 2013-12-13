@@ -1,0 +1,6 @@
+name    description         version
+module1 some description    0.0.1
+        larger than the max  
+module2 another description 0.2.0
+        larger than the max
+
