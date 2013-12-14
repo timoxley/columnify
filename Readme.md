@@ -7,13 +7,16 @@ Designed to [handle sensible wrapping in npm search results](https://github.com/
 
 ## Examples
 
-Text is aligned under column headings.
+### Columns
+
+Text is aligned under column headings. Columns are automatically resized to fit the content of the largest cell. 
+Each cell will be padded with spaces to fill the available space and ensure column contents are left-aligned.
 
 ```js
 var columnify = require('columnify')
 
 var columns = columnify([{
-  name: 'module1',
+  name: 'mod1',
   version: '0.0.1'
 }, {
   name: 'module2',
@@ -24,14 +27,13 @@ console.log(columns)
 ```
 ```
 NAME    VERSION
-module1 0.0.1  
+mod1    0.0.1  
 module2 0.2.0  
 ```
 
 ### Wrapping Column Cells
 
-You can define the maximum width before wrapping for
-individual cells in columns.
+You can define the maximum width before wrapping for individual cells in columns. Minimum width is also supported. Wrapping will happen at word boundaries. Empty cells or those which do not fill the max/min width will be padded with spaces.
 
 ```js
 var columnify = require('columnify')
@@ -58,7 +60,7 @@ module-two another description larger     0.2.0
 
 ### Truncated Columns
 
-Instead of wrapping, you can simply truncate at the maxiumum column width.
+You can disable wrapping and instead truncate content at the maximum column width. Truncation respects word boundaries.
 
 ```js
 var columns = columnify(data, {
@@ -81,12 +83,12 @@ module-two another description 0.2.0
 
 ### Custom Column Splitter
 
-Columns can be split with custom characters.
+If your columns need some bling, you can split columns with custom characters.
 
 ```js
 
 var columns = columnify(data, {
-  columnSplitter: ' | '
+  columnSplitter: ' * '
 })
 
 console.log(columns)
@@ -99,7 +101,7 @@ module-two | another description larger than the max                      | 0.2.
 
 ### Filtering & Ordering Columns
 
-All properties are converted into columns by default, whether or not they exist on every object or not. 
+By default, all properties are converted into columns, whether or not they exist on every object or not. 
 
 To explicitly specify which columns to include, and in which order, supply a "columns" array:
 
