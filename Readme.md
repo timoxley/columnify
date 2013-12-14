@@ -88,7 +88,7 @@ If your columns need some bling, you can split columns with custom characters.
 ```js
 
 var columns = columnify(data, {
-  columnSplitter: ' * '
+  columnSplitter: ' | '
 })
 
 console.log(columns)
