@@ -1,6 +1,8 @@
 "use strict"
 
 module.exports = function(items, options) {
+
+  // defaults
   options = options || Object.create(null)
   var defaultColumn = options.defaultColumn || {
     maxWidth: Infinity,
@@ -16,6 +18,7 @@ module.exports = function(items, options) {
 
   var columnNames = options.columns || []
 
+  // if not suppled column names, automatically determine columns from data
   if (!columnNames.length) {
     items.forEach(function(item) {
       for (var columnName in item) {
@@ -24,19 +27,21 @@ module.exports = function(items, options) {
     })
   }
 
+  // initialize each column
   var columns = columnNames.reduce(function(columns, columnName) {
-    // initialize each column
     columns[columnName] = {}
     return columns
   }, Object.create(null))
 
+  // set column defaults
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     var width = options.widths[columnName] || defaultColumn
-    column.maxWidth = width.maxWidth || defaultColumn.maxWidth || 0
+    column.maxWidth = width.maxWidth || defaultColumn.maxWidth || Infinity
     column.minWidth = width.minWidth || defaultColumn.minWidth || 0
   })
 
+  // sanitize data
   items = items.map(function(item) {
     var result = Object.create(null)
     columnNames.forEach(function(columnName) {
@@ -57,7 +62,8 @@ module.exports = function(items, options) {
   })
   items.unshift(headers)
 
-  // get actual width between min & max
+  // get actual max-width between min & max
+  // based on length of data in columns
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     column.width = items.map(function(item) {
@@ -71,19 +77,31 @@ module.exports = function(items, options) {
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item) {
-      item[columnName] = splitLines(item[columnName], column.width)
+      item[columnName] = splitIntoLines(item[columnName], column.width)
+      // only include first line if truncating
       if (options.truncate) item[columnName] = item[columnName].slice(0, 1)
       return item
     })
   })
 
   var rows = createRows(items, columns, columnNames)
+
+  // conceive output
   return rows.reduce(function(output, row) {
     return output.concat(row.reduce(function(rowOut, line) {
       return rowOut.concat(line.join(options.columnSplitter))
     }, []))
   }, []).join(options.spacing)
 }
+
+/**
+ * Convert wrapped lines into rows with padded values.
+ *
+ * @param Array items data to process
+ * @param Array columns column width settings for wrapping
+ * @param Array columnNames column ordering
+ * @return Array items wrapped in arrays, corresponding to lines
+ */
 
 function createRows(items, columns, columnNames) {
   return items.map(function(item) {
@@ -92,17 +110,28 @@ function createRows(items, columns, columnNames) {
     columnNames.forEach(function(columnName) {
       numLines = Math.max(numLines, item[columnName].length)
     })
+    // combine matching lines of each rows
     for (var i = 0; i < numLines; i++) {
       row[i] = row[i] || []
       columnNames.forEach(function(columnName) {
         var column = columns[columnName]
-        var val = item[columnName][i] || ''
+        var val = item[columnName][i] || '' // || '' ensures empty columns get padded
         row[i].push(padRight(val, column.width))
       })
     }
     return row
   })
 }
+
+/**
+ * Pad `str` up to total length `max` with `chr`.
+ * If `str` is longer than `max`, padRight will return `str` unaltered.
+ *
+ * @param String str string to pad
+ * @param Number max total length of output string
+ * @param String chr optional. Character to pad with. default: ' '
+ * @return String padded str
+ */
 
 function padRight(str, max, chr) {
   var length = 1 + max - str.length
@@ -111,11 +140,15 @@ function padRight(str, max, chr) {
   .join(chr || ' ')
 }
 
-function padLeft(str, max, chr) {
-  return Array.apply(null, {length: 1 + max - str.length}).join(chr || ' ') + str
-}
-
-function splitLines(str, max) {
+/**
+ * Split a String `str` into lines of maxiumum length `max`.
+ * Splits on word boundaries.
+ *
+ * @param String str string to split
+ * @param Number max length of each line
+ * @return Array Array containing lines.
+ */
+function splitIntoLines(str, max) {
   return str.trim().split(' ').reduce(function(lines, word) {
     var line = lines[lines.length - 1]
     if (line && line.join(' ').length + word.length < max) {
