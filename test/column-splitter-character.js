@@ -15,10 +15,7 @@ var data = [{
 
 test('column splitter character', function(t) {
   t.plan(1)
-  var expected = fs.readFileSync(__dirname + '/splitter-character-expected.txt', 'utf8')
-  console.error(columnify(data, {
-    columnSplitter: ' | '
-  }).trim())
+  var expected = fs.readFileSync(__dirname + '/column-splitter-character-expected.txt', 'utf8')
   t.equal(columnify(data, {
     columnSplitter: ' | '
   }).trim(), expected.trim())
