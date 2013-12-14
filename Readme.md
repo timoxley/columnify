@@ -7,9 +7,23 @@ Supports minimum and maximum column widths via truncation and text wrapping.
 
 Designed to [handle sensible wrapping in npm search results](https://github.com/isaacs/npm/pull/2328).
 
+## Installation & Update
+
+```
+$ npm install --save columnify@latest
+```
+
+## Usage
+
+```js
+var columnify = require('columnify')
+var columns = columnify(data, options)
+console.log(columns)
+```
+
 ## Examples
 
-### Columns
+### Simple Columns
 
 Text is aligned under column headings. Columns are automatically resized to fit the content of the largest cell. 
 Each cell will be padded with spaces to fill the available space and ensure column contents are left-aligned.
