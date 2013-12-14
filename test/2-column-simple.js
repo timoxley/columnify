@@ -14,5 +14,5 @@ var data = [{
 test('2 column', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/2-column-simple-expected.txt', 'utf8')
-  t.equal(columnify(data), expected)
+  t.equal(columnify(data).trim(), expected.trim())
 })

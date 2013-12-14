@@ -1,116 +1,128 @@
 "use strict"
 
-module.exports = function(data, options) {
-  options = options || {}
-  options.maxWidths = options.maxWidths || {}
-  // initialize each column
-  var columns = data.reduce(function(columns, item) {
-    Object.keys(item).forEach(function(columnName) {
-      columns[columnName] = columns[columnName] || [columnName]
-    })
-    return columns
-  }, {})
+module.exports = function(items, options) {
+  options = options || Object.create(null)
+  var defaultColumn = options.defaultColumn || {
+    maxWidth: Infinity,
+    minWidth: 0
+  }
 
-  data.forEach(function(dat) {
-    Object.keys(columns).forEach(function(columnName) {
-      var column = columns[columnName]
-      column.push(dat[columnName] || '')
+  defaultColumn.maxWidth = defaultColumn.maxWidth || Infinity
+  defaultColumn.minWidth = defaultColumn.minWidth || 0
+  options.columnSplitter = options.columnSplitter || ' '
+
+  options.widths = options.widths || Object.create(null)
+
+  var columnNames = options.columns || []
+
+  if (!columnNames.length) {
+    items.forEach(function(item) {
+      for (var columnName in item) {
+        if (columnNames.indexOf(columnName) === -1) columnNames.push(columnName)
+      }
     })
+  }
+
+  var columns = columnNames.reduce(function(columns, columnName) {
+    // initialize each column
+    columns[columnName] = {}
+    return columns
+  }, Object.create(null))
+
+  columnNames.forEach(function(columnName) {
+    var column = columns[columnName]
+    var width = options.widths[columnName] || defaultColumn
+    column.maxWidth = width.maxWidth || defaultColumn.maxWidth || 0
+    column.minWidth = width.minWidth || defaultColumn.minWidth || 0
   })
 
-  // calculate max-widths
-  var maxWidth = {}
-  Object.keys(columns).forEach(function(columnName) {
+  items = items.map(function(item) {
+    var result = Object.create(null)
+    columnNames.forEach(function(columnName) {
+      // null/undefined -> ''
+      result[columnName] = item[columnName] != null ? item[columnName] : ''
+      // toString everything
+      result[columnName] = '' + result[columnName]
+      // remove funky chars
+      result[columnName] = result[columnName].replace(/\s+/g, " ")
+    })
+    return result
+  })
+
+  // add headers
+  var headers = {}
+  columnNames.forEach(function(columnName) {
+    headers[columnName] = columnName.toUpperCase()
+  })
+  items.unshift(headers)
+
+  // get actual width between min & max
+  columnNames.forEach(function(columnName) {
     var column = columns[columnName]
-    maxWidth[columnName] = column.reduce(function(max, cur) {
-      return Math.max(max, cur.length) 
+    column.width = items.map(function(item) {
+      return item[columnName]
+    }).reduce(function(min, cur) {
+      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur.length)))
     }, 0)
   })
 
-  // wrap
-  Object.keys(columns).forEach(function(columnName) {
+  // wrap long lines
+  columnNames.forEach(function(columnName) {
     var column = columns[columnName]
-    columns[columnName] = column.map(function(row) {
-      return splitLines(row, options.maxWidths[columnName] || maxWidth[columnName])
+    items = items.map(function(item) {
+      item[columnName] = splitLines(item[columnName], column.width)
+      if (options.truncate) item[columnName] = item[columnName].slice(0, 1)
+      return item
     })
   })
 
-  // add missing rows
-  //
-  Object.keys(columns).forEach(function(columnName) {
-    var column = columns[columnName]
-    //var newRow = []
-    //Object.keys(columns)
-    //column
-    //newColumn.forEach(function() {
-       
-    //})
-    //column.filter(function(row) {
-      //row.filter()
-    //})
-  })
-
-  // column data is now arrays
-  //Object.keys(columns).forEach(function(columnName) {
-    //var column = columns[columnName]
-    //columns[columnName] = column.map(function(data) {
-      //return padRight(data[0], maxWidth[columnName])
-    //})
-  //})
-
-  return renderRows(columns)
+  var rows = createRows(items, columns, columnNames)
+  return rows.reduce(function(output, row) {
+    return output.concat(row.reduce(function(rowOut, line) {
+      return rowOut.concat(line.join(options.columnSplitter))
+    }, []))
+  }, []).join('\n')
 }
 
-
-[['line 1', 'line ']]
-
-function renderRows(columns, rowNum, columnOffset, output) {
-  output = output || ''
-  rowNum = rowNum || 0
-  if (rowNum >= Object.keys(columns)[0].length - 1) return output
-  var row = []
-  Object.keys(columns).forEach(function(columnName) {
-    var column = columns[columnName]
-    row.push(column[rowNum])
+function createRows(items, columns, columnNames) {
+  return items.map(function(item) {
+    var row = []
+    var numLines = 0
+    columnNames.forEach(function(columnName) {
+      numLines = Math.max(numLines, item[columnName].length)
+    })
+    for (var i = 0; i < numLines; i++) {
+      row[i] = row[i] || []
+      columnNames.forEach(function(columnName) {
+        var column = columns[columnName]
+        var val = item[columnName][i] || ''
+        row[i].push(padRight(val, column.width))
+      })
+    }
+    return row
   })
-  row.join(' ')
-  output += row.join(' ') + '\n'
-  return renderRows(columns, rowNum + 1, output)
 }
 
 function padRight(str, max, chr) {
-  return str + Array.apply(null, {length: 1 + max - str.length}).join(chr || ' ')
+  var length = 1 + max - str.length
+  if (length <= 0) return str
+  return str + Array.apply(null, {length: length})
+  .join(chr || ' ')
 }
 
 function padLeft(str, max, chr) {
   return Array.apply(null, {length: 1 + max - str.length}).join(chr || ' ') + str
 }
 
-//function wrap(str, max, chr) {
-  //return str.split('')
-//}
-
 function splitLines(str, max) {
-  return str.split(' ').reduce(function(lines, word) {
-    var line = lines[0] = lines[0] || []
-    if (line.join(' ').length + word.length < max) {
-      lines[0].push(word) // add to line
+  return str.trim().split(' ').reduce(function(lines, word) {
+    var line = lines[lines.length - 1]
+    if (line && line.join(' ').length + word.length < max) {
+      lines[lines.length - 1].push(word) // add to line
     }
-    else lines.unshift([word]) // new line
+    else lines.push([word]) // new line
     return lines
   }, []).map(function(l) {
     return l.join(' ')
   })
- 
-  //lines = lines || []
-   
-  //console.log('split', arguments)
-  //out = out || ''
-  //chr = chr || '\n'
-  //if (str.length <= interval) {
-    //out += str
-    //return out
-  //}
-  //out += str.substr(0, interval) + chr
-  //return split(str.substr(interval), interval, out, chr)
 }

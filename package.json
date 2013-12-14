@@ -1,0 +1,18 @@
+{
+  "name": "columnify",
+  "version": "0.0.0",
+  "description": "Render data in text columns, with in-column text-wrap.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap test"
+  },
+  "author": "Tim Oxley",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "~2.3.0",
+    "tap": "~0.4.6"
+  }
+}

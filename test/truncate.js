@@ -11,25 +11,18 @@ var data = [{
   name: 'module-two',
   description: 'another description larger than the max',
   version: '0.2.0',
-}, {
-  name: 'mod3',
-  description: '',
-  version: '0.3.0',
-}, {
-  name: 'module-four-four-four-four',
-  description: '',
-  version: '0.0.4',
 }]
 
-test('wrapping wide columns', function(t) {
+test('widths are limited when truncation enabled', function(t) {
   t.plan(1)
-  var expected = fs.readFileSync(__dirname + '/wrap-expected.txt', 'utf8')
+  var expected = fs.readFileSync(__dirname + '/truncate-expected.txt', 'utf8')
   t.equal(columnify(data, {
+    truncate: true,
     widths: {
       description: {
-        maxWidth: 30,
-        minWidth: 10
+        maxWidth: 19
       }
     }
   }).trim(), expected.trim())
 })
+

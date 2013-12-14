@@ -1,6 +1,7 @@
-name    description         version
-module1 some description    0.0.1
-        larger than the max  
-module2 another description 0.2.0
-        larger than the max
-
+NAME                       DESCRIPTION                    VERSION
+mod1                       some description which happens 0.0.1  
+                           to be far larger than the max         
+module-two                 another description larger     0.2.0  
+                           than the max                          
+mod3                                                      0.3.0  
+module-four-four-four-four                                0.0.4  

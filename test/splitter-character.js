@@ -11,25 +11,15 @@ var data = [{
   name: 'module-two',
   description: 'another description larger than the max',
   version: '0.2.0',
-}, {
-  name: 'mod3',
-  description: '',
-  version: '0.3.0',
-}, {
-  name: 'module-four-four-four-four',
-  description: '',
-  version: '0.0.4',
 }]
 
-test('wrapping wide columns', function(t) {
+test('column splitter character', function(t) {
   t.plan(1)
-  var expected = fs.readFileSync(__dirname + '/wrap-expected.txt', 'utf8')
+  var expected = fs.readFileSync(__dirname + '/splitter-character-expected.txt', 'utf8')
+  console.error(columnify(data, {
+    columnSplitter: ' | '
+  }).trim())
   t.equal(columnify(data, {
-    widths: {
-      description: {
-        maxWidth: 30,
-        minWidth: 10
-      }
-    }
+    columnSplitter: ' | '
   }).trim(), expected.trim())
 })
