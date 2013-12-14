@@ -97,6 +97,35 @@ mod1       | some description which happens to be far larger than the max | 0.0.
 module-two | another description larger than the max                      | 0.2.0
 ```
 
+### Filtering & Ordering Columns
+
+All properties are converted into columns by default, whether or not they exist on every object or not. 
+
+To explicitly specify which columns to include, and in which order, supply a "columns" array:
+
+```js
+var data = [{
+  name: 'module1',
+  description: 'some description',
+  version: '0.0.1',
+}, {
+  name: 'module2',
+  description: 'another description',
+  version: '0.2.0',
+}]
+
+var columns = columnify(data, {
+  columns: ['name', 'version'] // note description not included
+})
+
+console.log(columns)
+```
+
+```
+NAME    VERSION
+module1 0.0.1
+module2 0.2.0
+```
 ## License
 
 MIT
