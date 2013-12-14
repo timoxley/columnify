@@ -10,6 +10,7 @@ module.exports = function(items, options) {
   defaultColumn.maxWidth = defaultColumn.maxWidth || Infinity
   defaultColumn.minWidth = defaultColumn.minWidth || 0
   options.columnSplitter = options.columnSplitter || ' '
+  options.spacing = options.spacing || '\n'
 
   options.widths = options.widths || Object.create(null)
 
@@ -81,7 +82,7 @@ module.exports = function(items, options) {
     return output.concat(row.reduce(function(rowOut, line) {
       return rowOut.concat(line.join(options.columnSplitter))
     }, []))
-  }, []).join('\n')
+  }, []).join(options.spacing)
 }
 
 function createRows(items, columns, columnNames) {
