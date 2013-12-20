@@ -24,3 +24,8 @@ test('can split long words multiple times', function(t) {
   t.plan(1)
   t.equal(splitLongWords('dodecahedrons', 3, '…'), 'do… de… ca… he… dr… ons')
 })
+
+test('ignores/strips leading whitespace', function(t) {
+  t.plan(1)
+  t.equal(splitLongWords(' dodecahedrons', 3, '…'), 'do… de… ca… he… dr… ons')
+})

@@ -50,6 +50,7 @@ function splitIntoLines(str, max) {
  */
 
 function splitLongWords(str, max, truncationChar, result) {
+  str = str.trim()
   result = result || []
   if (!str) return result.join(' ') || ''
   var words = str.split(' ')
