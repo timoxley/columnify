@@ -76,14 +76,16 @@ module-two another description larger     0.2.0
 
 ### Truncated Columns
 
-You can disable wrapping and instead truncate content at the maximum column width. Truncation respects word boundaries.
+You can disable wrapping and instead truncate content at the maximum
+column width. Truncation respects word boundaries.  A truncation marker,
+`…` will appear next to the last word in any truncated line.
 
 ```js
 var columns = columnify(data, {
   truncate: true,
   widths: {
     description: {
-      maxWidth: 19
+      maxWidth: 20
     }
   }
 })
@@ -92,9 +94,33 @@ console.log(columns)
 ```
 
 ```
-NAME       DESCRIPTION         VERSION
-mod1       some description    0.0.1  
-module-two another description 0.2.0  
+NAME       DESCRIPTION          VERSION
+mod1       some description…    0.0.1  
+module-two another description… 0.2.0  
+```
+
+### Custom Truncation Marker
+
+You can change the truncation marker to something other than the default
+`…`.
+
+```js
+var columns = columnify(data, {
+  truncate: '>',
+  widths: {
+    description: {
+      maxWidth: 20
+    }
+  }
+})
+
+console.log(columns)
+```
+
+```
+NAME       DESCRIPTION          VERSION
+mod1       some description>    0.0.1  
+module-two another description> 0.2.0  
 ```
 
 ### Custom Column Splitter
