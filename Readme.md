@@ -25,8 +25,10 @@ console.log(columns)
 
 ### Simple Columns
 
-Text is aligned under column headings. Columns are automatically resized to fit the content of the largest cell. 
-Each cell will be padded with spaces to fill the available space and ensure column contents are left-aligned.
+Text is aligned under column headings. Columns are automatically resized
+to fit the content of the largest cell.  Each cell will be padded with
+spaces to fill the available space and ensure column contents are
+left-aligned.
 
 ```js
 var columnify = require('columnify')
@@ -49,7 +51,10 @@ module2 0.2.0
 
 ### Wrapping Column Cells
 
-You can define the maximum width before wrapping for individual cells in columns. Minimum width is also supported. Wrapping will happen at word boundaries. Empty cells or those which do not fill the max/min width will be padded with spaces.
+You can define the maximum width before wrapping for individual cells in
+columns. Minimum width is also supported. Wrapping will happen at word
+boundaries. Empty cells or those which do not fill the max/min width
+will be padded with spaces.
 
 ```js
 var columnify = require('columnify')
@@ -125,7 +130,8 @@ module-two another description> 0.2.0
 
 ### Custom Column Splitter
 
-If your columns need some bling, you can split columns with custom characters.
+If your columns need some bling, you can split columns with custom
+characters.
 
 ```js
 
@@ -143,9 +149,11 @@ module-two | another description larger than the max                      | 0.2.
 
 ### Filtering & Ordering Columns
 
-By default, all properties are converted into columns, whether or not they exist on every object or not. 
+By default, all properties are converted into columns, whether or not
+they exist on every object or not.
 
-To explicitly specify which columns to include, and in which order, supply a "columns" array:
+To explicitly specify which columns to include, and in which order,
+supply a "columns" array:
 
 ```js
 var data = [{
