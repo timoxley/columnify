@@ -12,6 +12,11 @@ module.exports = function(items, options) {
   defaultColumn.maxWidth = defaultColumn.maxWidth || Infinity
   defaultColumn.minWidth = defaultColumn.minWidth || 0
   options.columnSplitter = options.columnSplitter || ' '
+
+  if (typeof options.truncate !== 'string') {
+    options.truncate = options.truncate ? '…' : false
+  }
+
   options.spacing = options.spacing || '\n'
 
   options.widths = options.widths || Object.create(null)
@@ -77,11 +82,29 @@ module.exports = function(items, options) {
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item) {
-      item[columnName] = splitIntoLines(item[columnName], column.width)
-      // only include first line if truncating
-      if (options.truncate) item[columnName] = item[columnName].slice(0, 1)
+      var cell = item[columnName]
+      item[columnName] = splitIntoLines(cell, column.width)
+
+      // if truncating required, only include first line + add truncation char
+      if (options.truncate && item[columnName].length > 1) {
+          item[columnName] = splitIntoLines(cell, column.width - options.truncate.length)
+          item[columnName][0] += options.truncate
+          item[columnName] = item[columnName].slice(0, 1)
+      }
       return item
     })
+  })
+
+  // recalculate column widths from truncated output
+  columnNames.forEach(function(columnName) {
+    var column = columns[columnName]
+    column.width = items.map(function(item) {
+      return item[columnName].reduce(function(min, cur) {
+        return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur.length)))
+      }, 0)
+    }).reduce(function(min, cur) {
+      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur)))
+    }, 0)
   })
 
   var rows = createRows(items, columns, columnNames)

@@ -20,7 +20,7 @@ test('widths are limited when truncation enabled', function(t) {
     truncate: true,
     widths: {
       description: {
-        maxWidth: 19
+        maxWidth: 20
       }
     }
   }).trim(), expected.trim())
