@@ -18,9 +18,8 @@ module.exports = function(items, options) {
   defaultColumn.minWidth = defaultColumn.minWidth || 0
   options.columnSplitter = options.columnSplitter || ' '
 
-  if (typeof options.truncate !== 'string') {
-    options.truncate = options.truncate ? '…' : false
-  }
+  if (typeof options.truncate !== 'string') options.truncate = options.truncate ? '…' : false
+
   var truncationChar = options.truncate || '…'
 
   options.spacing = options.spacing || '\n'
@@ -67,6 +66,7 @@ module.exports = function(items, options) {
   })
 
   // add headers
+  // TODO: make configurable
   var headers = {}
   columnNames.forEach(function(columnName) {
     headers[columnName] = columnName.toUpperCase()
@@ -110,7 +110,7 @@ module.exports = function(items, options) {
     })
   })
 
-  // recalculate column widths from truncated output
+  // recalculate column widths from truncated output/multilines
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     column.width = items.map(function(item) {
@@ -122,7 +122,7 @@ module.exports = function(items, options) {
     }, 0)
   })
 
-  var rows = createRows(items, columns, columnNames)
+  var rows = createRows(items, columns, columnNames) // merge lines into rows
 
   // conceive output
   return rows.reduce(function(output, row) {
