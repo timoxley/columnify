@@ -148,6 +148,7 @@ function padRight(str, max, chr) {
  * @param Number max length of each line
  * @return Array Array containing lines.
  */
+
 function splitIntoLines(str, max) {
   return str.trim().split(' ').reduce(function(lines, word) {
     var line = lines[lines.length - 1]
