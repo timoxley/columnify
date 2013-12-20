@@ -16,6 +16,7 @@ module.exports = function(items, options) {
   if (typeof options.truncate !== 'string') {
     options.truncate = options.truncate ? '…' : false
   }
+  var truncationChar = options.truncate || '…'
 
   options.spacing = options.spacing || '\n'
 
@@ -78,6 +79,15 @@ module.exports = function(items, options) {
     }, 0)
   })
 
+  // split long words
+  columnNames.forEach(function(columnName) {
+    var column = columns[columnName]
+    items = items.map(function(item) {
+      item[columnName] = splitLongWords(item[columnName], column.width, truncationChar)
+      return item
+    })
+  })
+
   // wrap long lines
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
@@ -87,8 +97,8 @@ module.exports = function(items, options) {
 
       // if truncating required, only include first line + add truncation char
       if (options.truncate && item[columnName].length > 1) {
-          item[columnName] = splitIntoLines(cell, column.width - options.truncate.length)
-          item[columnName][0] += options.truncate
+          item[columnName] = splitIntoLines(cell, column.width - truncationChar.length)
+          if (item[columnName][0].slice(-truncationChar.length) != truncationChar) item[columnName][0] += truncationChar
           item[columnName] = item[columnName].slice(0, 1)
       }
       return item
@@ -183,4 +193,31 @@ function splitIntoLines(str, max) {
   }, []).map(function(l) {
     return l.join(' ')
   })
+}
+
+/**
+ * Add spaces and `truncationChar` between words of
+ * `str` which are longer than `max`.
+ *
+ * @param String str string to split
+ * @param Number max length of each line
+ * @param Number truncationChar character to append to split words
+ * @return String
+ */
+
+function splitLongWords(str, max, truncationChar, result) {
+  result = result || []
+  if (!str) return result.join(' ') || ''
+  var words = str.split(' ')
+  var word = words.shift() || str
+
+  if (word.length > max) {
+    var remainder = word.slice(max - truncationChar.length) // get remainder
+    words.unshift(remainder) // save remainder for next loop
+
+    word = word.slice(0, max - truncationChar.length) // grab truncated word
+    word += truncationChar // add trailing … or whatever
+  }
+  result.push(word)
+  return splitLongWords(words.join(' '), max, truncationChar, result)
 }

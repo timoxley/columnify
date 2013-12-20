@@ -5,11 +5,15 @@ var columnify =  require('../')
 
 var data = [{
   name: 'mod1',
-  description: 'some description which happens to be far larger than the max',
+  description: 'some description',
   version: '0.0.1',
 }, {
   name: 'module-two',
   description: 'another description larger than the max',
+  version: '0.2.0',
+}, {
+  name: 'module-three',
+  description: 'thisisaverylongwordandshouldbetruncated',
   version: '0.2.0',
 }]
 

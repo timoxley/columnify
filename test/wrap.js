@@ -13,7 +13,7 @@ var data = [{
   version: '0.2.0',
 }, {
   name: 'mod3',
-  description: '',
+  description: 'thisisaverylongwordandshouldbewrapped',
   version: '0.3.0',
 }, {
   name: 'module-four-four-four-four',
@@ -24,6 +24,7 @@ var data = [{
 test('wrapping wide columns', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/wrap-expected.txt', 'utf8')
+
   t.equal(columnify(data, {
     widths: {
       description: {
