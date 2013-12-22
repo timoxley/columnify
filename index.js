@@ -25,6 +25,9 @@ module.exports = function(items, options) {
   options.spacing = options.spacing || '\n'
 
   options.widths = options.widths || Object.create(null)
+  options.headingify = options.headingify || function(key) {
+    return key.toUpperCase()
+  }
 
   var columnNames = options.columns || []
 
@@ -66,10 +69,9 @@ module.exports = function(items, options) {
   })
 
   // add headers
-  // TODO: make configurable
   var headers = {}
   columnNames.forEach(function(columnName) {
-    headers[columnName] = columnName.toUpperCase()
+    headers[columnName] = options.headings(columnName)
   })
   items.unshift(headers)
 
