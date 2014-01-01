@@ -71,7 +71,7 @@ module.exports = function(items, options) {
   // add headers
   var headers = {}
   columnNames.forEach(function(columnName) {
-    headers[columnName] = options.headings(columnName)
+    headers[columnName] = options.headingify(columnName)
   })
   items.unshift(headers)
 
