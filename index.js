@@ -20,20 +20,22 @@ var DEFAULTS = {
 }
 
 module.exports = function(items, options) {
+
   options = options || {}
 
   var columnConfigs = options.config || {}
-  delete options.config
+  delete options.config // remove config so doesn't appear on every column.
 
+  // Option defaults inheritance:
+  // options.config[columnName] => options => DEFAULTS
   options = mixin(options, DEFAULTS)
-
-  options.spacing = options.spacing || '\n'
-
   options.config = options.config || Object.create(null)
 
-  var columnNames = options.include || []
+  options.spacing = options.spacing || '\n' // probably useless
 
-  // if not suppled column names, automatically determine columns from data
+  var columnNames = options.include || [] // optional user-supplied columns to include
+
+  // if not suppled column names, automatically determine columns from data keys
   if (!columnNames.length) {
     items.forEach(function(item) {
       for (var columnName in item) {
@@ -42,7 +44,7 @@ module.exports = function(items, options) {
     })
   }
 
-  // initialize each column defaults
+  // initialize column defaults (each column inherits from options.config)
   var columns = columnNames.reduce(function(columns, columnName) {
     var column = Object.create(options)
     columns[columnName] = mixin(column, columnConfigs[columnName])
@@ -71,14 +73,6 @@ module.exports = function(items, options) {
     return result
   })
 
-  // add headers
-  var headers = {}
-  columnNames.forEach(function(columnName) {
-    var column = columns[columnName]
-    headers[columnName] = column.headingTransform(columnName)
-  })
-  items.unshift(headers)
-
   // transform data cells
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
@@ -87,6 +81,14 @@ module.exports = function(items, options) {
       return item
     })
   })
+
+  // add headers
+  var headers = {}
+  columnNames.forEach(function(columnName) {
+    var column = columns[columnName]
+    headers[columnName] = column.headingTransform(columnName)
+  })
+  items.unshift(headers)
 
   // get actual max-width between min & max
   // based on length of data in columns
@@ -99,7 +101,7 @@ module.exports = function(items, options) {
     }, 0)
   })
 
-  // split long words
+  // split long words so they can break onto multiple lines
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item) {
@@ -108,7 +110,7 @@ module.exports = function(items, options) {
     })
   })
 
-  // wrap long lines
+  // wrap long lines. each item is now an array of lines.
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item, index) {
@@ -126,7 +128,7 @@ module.exports = function(items, options) {
     })
   })
 
-  // recalculate column widths from truncated output/multilines
+  // recalculate column widths from truncated output/lines
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     column.width = items.map(function(item) {
