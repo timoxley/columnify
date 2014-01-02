@@ -67,9 +67,20 @@ module.exports = function(items, options) {
   // add headers
   var headers = {}
   columnNames.forEach(function(columnName) {
-    headers[columnName] = options.headingify(columnName)
+    var column = columns[columnName]
+    headers[columnName] = column.headingTransform(columnName)
   })
   items.unshift(headers)
+
+  // transform data cells
+
+  columnNames.forEach(function(columnName) {
+    var column = columns[columnName]
+    items = items.map(function(item, index) {
+      item[columnName] = column.dataTransform(item[columnName], column, index)
+      return item
+    })
+  })
 
   // get actual max-width between min & max
   // based on length of data in columns
@@ -94,7 +105,7 @@ module.exports = function(items, options) {
   // wrap long lines
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
-    items = items.map(function(item) {
+    items = items.map(function(item, index) {
       var cell = item[columnName]
       item[columnName] = splitIntoLines(cell, column.width)
 

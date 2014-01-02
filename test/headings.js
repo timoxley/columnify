@@ -25,7 +25,7 @@ test('column headings are uppercased by default', function(t) {
 test('headings can be transformed by a function', function(t) {
   t.plan(3)
   var result = columnify(data, {
-    headingify: function(name) {
+    headingTransform: function(name) {
       return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase()
     }
   })
@@ -35,3 +35,20 @@ test('headings can be transformed by a function', function(t) {
   t.ok(headings.indexOf('Version') !== -1, 'Version exists')
 })
 
+test('headings can be transformed on a per-column basis', function(t) {
+  t.plan(3)
+  var result = columnify(data, {
+    config: {
+      // leave default uppercase heading
+      name: {
+        headingTransform: function(name) { // only title case name
+          return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase()
+        }
+      }
+    }
+  })
+  var headings = result.split('\n')[0] // first line
+  t.ok(headings.indexOf('Name') !== -1, 'Name exists')
+  t.ok(headings.indexOf('DESCRIPTION') !== -1, 'Description exists')
+  t.ok(headings.indexOf('VERSION') !== -1, 'Version exists')
+})
