@@ -45,8 +45,7 @@ module.exports = function(items, options) {
   // initialize each column defaults
   var columns = columnNames.reduce(function(columns, columnName) {
     var column = Object.create(options)
-    mixin(column, columnConfigs[columnName] || {})
-    columns[columnName] = column
+    columns[columnName] = mixin(column, columnConfigs[columnName])
     return columns
   }, Object.create(null))
 
@@ -181,12 +180,13 @@ function createRows(items, columns, columnNames) {
  * @return Object `target` after mixin applied.
  */
 
-function mixin(a, source) {
+function mixin(target, source) {
+  source = source || {}
   for (var key in source) {
-    if (a.hasOwnProperty(key)) continue
-    a[key] = source[key]
+    if (target.hasOwnProperty(key)) continue
+    target[key] = source[key]
   }
-  return a
+  return target
 }
 
 /**
