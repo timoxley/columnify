@@ -80,7 +80,6 @@ module.exports = function(items, options) {
   items.unshift(headers)
 
   // transform data cells
-
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item, index) {

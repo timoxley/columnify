@@ -23,7 +23,10 @@
     "column",
     "text",
     "ansi",
-    "wrap"
+    "console",
+    "terminal",
+    "wrap",
+    "table"
   ],
   "bugs": {
     "url": "https://github.com/timoxley/columnify/issues"
