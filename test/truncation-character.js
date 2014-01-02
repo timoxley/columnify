@@ -23,7 +23,7 @@ test('truncation character is configurable', function(t) {
   t.equal(columnify(data, {
     truncateMarker: '>',
     truncate: true,
-    columns: {
+    config: {
       description: {
         maxWidth: 20
       }
@@ -37,7 +37,7 @@ test('truncation character can be multichar', function(t) {
   t.equal(columnify(data, {
     truncateMarker: '...',
     truncate: true,
-    columns: {
+    config: {
       description: {
         maxWidth: 20
       }

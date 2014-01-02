@@ -10,20 +10,26 @@ var DEFAULTS = {
   minWidth: 0,
   columnSplitter: ' ',
   truncate: false,
-  truncateMarker: '…'
+  truncateMarker: '…',
+  headingTransform: function(key) {
+    return key.toUpperCase()
+  },
+  dataTransform: function(cell, column, index) {
+    return cell
+  }
 }
 
 module.exports = function(items, options) {
   options = options || {}
 
+  var columnConfigs = options.config || {}
+  delete options.config
+
   options = mixin(options, DEFAULTS)
 
   options.spacing = options.spacing || '\n'
 
-  options.columns = options.columns || Object.create(null)
-  options.headingify = options.headingify || function(key) {
-    return key.toUpperCase()
-  }
+  options.config = options.config || Object.create(null)
 
   var columnNames = options.include || []
 
@@ -39,7 +45,7 @@ module.exports = function(items, options) {
   // initialize each column defaults
   var columns = columnNames.reduce(function(columns, columnName) {
     var column = Object.create(options)
-    mixin(column, options.columns[columnName] || {})
+    mixin(column, columnConfigs[columnName] || {})
     columns[columnName] = column
     return columns
   }, Object.create(null))

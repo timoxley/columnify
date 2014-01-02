@@ -1,5 +1,4 @@
 var test = require('tape')
-var fs = require('fs')
 
 var columnify =  require('../')
 

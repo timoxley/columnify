@@ -17,11 +17,11 @@ var data = [{
   version: '0.2.0',
 }]
 
-test('columns are limited when truncation enabled', function(t) {
+test('specific columns can be truncated, while others not', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/truncate-column-expected.txt', 'utf8')
   t.equal(columnify(data, {
-    columns: {
+    config: {
       name: {
         truncate: false,
         maxWidth: 9,

@@ -25,7 +25,7 @@ test('wrapping wide columns', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/wrap-expected.txt', 'utf8')
   t.equal(columnify(data, {
-    columns: {
+    config: {
       description: {
         maxWidth: 30,
         minWidth: 10

@@ -22,7 +22,7 @@ test('columns are limited when truncation enabled', function(t) {
   var expected = fs.readFileSync(__dirname + '/truncate-expected.txt', 'utf8')
   t.equal(columnify(data, {
     truncate: true,
-    columns: {
+    config: {
       description: {
         maxWidth: 20
       }
