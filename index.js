@@ -95,7 +95,8 @@ module.exports = function(items, options) {
       // if truncating required, only include first line + add truncation char
       if (column.truncate && item[columnName].length > 1) {
           item[columnName] = splitIntoLines(cell, column.width - column.truncateMarker.length)
-          if (item[columnName][0].slice(-column.truncateMarker.length) != column.truncateMarker) item[columnName][0] += column.truncateMarker
+          var firstLine = item[columnName][0]
+          if (!endsWith(firstLine, column.truncateMarker)) item[columnName][0] += column.truncateMarker
           item[columnName] = item[columnName].slice(0, 1)
       }
       return item
@@ -169,4 +170,15 @@ function mixin(a, source) {
     a[key] = source[key]
   }
   return a
+}
+
+/**
+ * Adapted from String.prototype.endsWith polyfill.
+ */
+
+function endsWith(target, searchString, position) {
+  position = position || target.length;
+  position = position - searchString.length;
+  var lastIndex = target.lastIndexOf(searchString);
+  return lastIndex !== -1 && lastIndex === position;
 }
