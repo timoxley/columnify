@@ -5,31 +5,27 @@ var padRight = utils.padRight
 var splitIntoLines = utils.splitIntoLines
 var splitLongWords = utils.splitLongWords
 
+var DEFAULTS = {
+  maxWidth: Infinity,
+  minWidth: 0,
+  columnSplitter: ' ',
+  truncate: false,
+  truncateMarker: '…'
+}
+
 module.exports = function(items, options) {
+  options = options || {}
 
-  // defaults
-  options = options || Object.create(null)
-  var defaultColumn = options.defaultColumn || {
-    maxWidth: Infinity,
-    minWidth: 0
-  }
-
-  defaultColumn.maxWidth = defaultColumn.maxWidth || Infinity
-  defaultColumn.minWidth = defaultColumn.minWidth || 0
-  options.columnSplitter = options.columnSplitter || ' '
-
-  if (typeof options.truncate !== 'string') options.truncate = options.truncate ? '…' : false
-
-  var truncationChar = options.truncate || '…'
+  options = mixin(options, DEFAULTS)
 
   options.spacing = options.spacing || '\n'
 
-  options.widths = options.widths || Object.create(null)
+  options.columns = options.columns || Object.create(null)
   options.headingify = options.headingify || function(key) {
     return key.toUpperCase()
   }
 
-  var columnNames = options.columns || []
+  var columnNames = options.include || []
 
   // if not suppled column names, automatically determine columns from data
   if (!columnNames.length) {
@@ -40,19 +36,13 @@ module.exports = function(items, options) {
     })
   }
 
-  // initialize each column
+  // initialize each column defaults
   var columns = columnNames.reduce(function(columns, columnName) {
-    columns[columnName] = {}
+    var column = Object.create(options)
+    mixin(column, options.columns[columnName] || {})
+    columns[columnName] = column
     return columns
   }, Object.create(null))
-
-  // set column defaults
-  columnNames.forEach(function(columnName) {
-    var column = columns[columnName]
-    var width = options.widths[columnName] || defaultColumn
-    column.maxWidth = width.maxWidth || defaultColumn.maxWidth || Infinity
-    column.minWidth = width.minWidth || defaultColumn.minWidth || 0
-  })
 
   // sanitize data
   items = items.map(function(item) {
@@ -90,7 +80,7 @@ module.exports = function(items, options) {
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item) {
-      item[columnName] = splitLongWords(item[columnName], column.width, truncationChar)
+      item[columnName] = splitLongWords(item[columnName], column.width, column.truncateMarker)
       return item
     })
   })
@@ -103,9 +93,9 @@ module.exports = function(items, options) {
       item[columnName] = splitIntoLines(cell, column.width)
 
       // if truncating required, only include first line + add truncation char
-      if (options.truncate && item[columnName].length > 1) {
-          item[columnName] = splitIntoLines(cell, column.width - truncationChar.length)
-          if (item[columnName][0].slice(-truncationChar.length) != truncationChar) item[columnName][0] += truncationChar
+      if (column.truncate && item[columnName].length > 1) {
+          item[columnName] = splitIntoLines(cell, column.width - column.truncateMarker.length)
+          if (item[columnName][0].slice(-column.truncateMarker.length) != column.truncateMarker) item[columnName][0] += column.truncateMarker
           item[columnName] = item[columnName].slice(0, 1)
       }
       return item
@@ -161,4 +151,22 @@ function createRows(items, columns, columnNames) {
     }
     return row
   })
+}
+
+/**
+ * Generic source->target mixin.
+ * Copy properties from `source` into `target` if target doesn't have them.
+ * Destructive. Modifies `target`.
+ *
+ * @param target Object target for mixin properties.
+ * @param source Object source of mixin properties.
+ * @return Object `target` after mixin applied.
+ */
+
+function mixin(a, source) {
+  for (var key in source) {
+    if (a.hasOwnProperty(key)) continue
+    a[key] = source[key]
+  }
+  return a
 }

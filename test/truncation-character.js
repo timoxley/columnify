@@ -21,8 +21,9 @@ test('truncation character is configurable', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/truncate-expected.txt', 'utf8').replace(/…/g, '>')
   t.equal(columnify(data, {
-    truncate: '>',
-    widths: {
+    truncateMarker: '>',
+    truncate: true,
+    columns: {
       description: {
         maxWidth: 20
       }
@@ -34,8 +35,9 @@ test('truncation character can be multichar', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/truncate-multichar-expected.txt', 'utf8')
   t.equal(columnify(data, {
-    truncate: '...',
-    widths: {
+    truncateMarker: '...',
+    truncate: true,
+    columns: {
       description: {
         maxWidth: 20
       }

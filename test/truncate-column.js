@@ -2,9 +2,9 @@ var test = require('tape')
 var fs = require('fs')
 
 var columnify =  require('../')
-
+       
 var data = [{
-  name: 'mod1',
+  name: 'alongnameshouldbesplitovermultiplelines',
   description: 'some description',
   version: '0.0.1',
 }, {
@@ -19,14 +19,20 @@ var data = [{
 
 test('columns are limited when truncation enabled', function(t) {
   t.plan(1)
-  var expected = fs.readFileSync(__dirname + '/truncate-expected.txt', 'utf8')
+  var expected = fs.readFileSync(__dirname + '/truncate-column-expected.txt', 'utf8')
   t.equal(columnify(data, {
-    truncate: true,
     columns: {
+      name: {
+        truncate: false,
+        maxWidth: 9,
+        truncateMarker: ''
+      },
       description: {
+        truncate: true,
         maxWidth: 20
       }
     }
   }).trim(), expected.trim())
 })
+
 
