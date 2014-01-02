@@ -49,6 +49,14 @@ module.exports = function(items, options) {
     return columns
   }, Object.create(null))
 
+  // sanitize column settings
+  columnNames.forEach(function(columnName) {
+    var column = columns[columnName]
+    column.maxWidth = Math.ceil(column.maxWidth)
+    column.minWidth = Math.ceil(column.minWidth)
+    column.truncate = !!column.truncate
+  })
+
   // sanitize data
   items = items.map(function(item) {
     var result = Object.create(null)
