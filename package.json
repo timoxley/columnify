@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Render data in text columns, supports in-column text-wrap.",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "tap test"
   },
