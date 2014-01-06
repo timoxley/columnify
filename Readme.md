@@ -9,7 +9,7 @@ Designed to [handle sensible wrapping in npm search results](https://github.com/
 
 `npm search` before & after integrating columnify:
 
-![npm-tidy-search](https://f.cloud.github.com/assets/43438/1848947/e3fbf88a-76a0-11e3-9dc3-0aa94732b3e6.gif)
+![npm-tidy-search](https://f.cloud.github.com/assets/43438/1848959/ae02ad04-76a1-11e3-8255-4781debffc26.gif)
 
 ## Installation & Update
 
