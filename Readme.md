@@ -7,7 +7,7 @@ Supports minimum and maximum column widths via truncation and text wrapping.
 
 Designed to [handle sensible wrapping in npm search results](https://github.com/isaacs/npm/pull/2328).
 
-### NPM Search before & after integrating columnify
+#### `npm search` before & after integrating columnify
 
 ![npm-tidy-search](https://f.cloud.github.com/assets/43438/1689224/1adf299c-5e1b-11e3-9dfc-0eb05f3bb250.gif)
 
