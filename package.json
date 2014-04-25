@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/timoxley/columnify/issues"
   },
-  "homepage": "https://github.com/timoxley/columnify"
+  "homepage": "https://github.com/timoxley/columnify",
+  "dependencies": {
+    "wcwidth.js": "0.0.3"
+  }
 }

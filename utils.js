@@ -1,3 +1,5 @@
+var wcwidth = require('wcwidth.js')();
+
 /**
  * Pad `str` up to total length `max` with `chr`.
  * If `str` is longer than `max`, padRight will return `str` unaltered.
@@ -11,7 +13,7 @@
 function padRight(str, max, chr) {
   str = str != null ? str : ''
   str = String(str)
-  var length = 1 + max - str.length
+  var length = 1 + max - str.wcwidth
   if (length <= 0) return str
   return str + Array.apply(null, {length: length})
   .join(chr || ' ')
@@ -29,7 +31,7 @@ function padRight(str, max, chr) {
 function splitIntoLines(str, max) {
   return str.trim().split(' ').reduce(function(lines, word) {
     var line = lines[lines.length - 1]
-    if (line && line.join(' ').length + word.length < max) {
+    if (line && line.join(' ').wcwidth + word.wcwidth < max) {
       lines[lines.length - 1].push(word) // add to line
     }
     else lines.push([word]) // new line
