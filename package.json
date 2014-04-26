@@ -30,6 +30,6 @@
   },
   "homepage": "https://github.com/timoxley/columnify",
   "dependencies": {
-    "wcwidth.js": "0.0.3"
+    "wcwidth.js": "~0.0.4"
   }
 }
