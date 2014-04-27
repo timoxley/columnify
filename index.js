@@ -1,5 +1,7 @@
 "use strict"
 
+
+
 var utils = require('./utils')
 var padRight = utils.padRight
 var splitIntoLines = utils.splitIntoLines
@@ -22,6 +24,9 @@ var DEFAULTS = {
 module.exports = function(items, options) {
 
   options = options || {}
+
+
+  var wcwidth = require('wcwidth.js')(options.wcwidth || { mokeypatch: false })
 
   var columnConfigs = options.config || {}
   delete options.config // remove config so doesn't appear on every column.
@@ -97,7 +102,7 @@ module.exports = function(items, options) {
     column.width = items.map(function(item) {
       return item[columnName]
     }).reduce(function(min, cur) {
-      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur.wcwidth)))
+      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, wcwidth(cur))))
     }, 0)
   })
 
@@ -105,7 +110,7 @@ module.exports = function(items, options) {
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item) {
-      item[columnName] = splitLongWords(item[columnName], column.width, column.truncateMarker)
+      item[columnName] = splitLongWords(item[columnName], column.width, column.truncateMarker, wcwidth)
       return item
     })
   })
@@ -115,11 +120,11 @@ module.exports = function(items, options) {
     var column = columns[columnName]
     items = items.map(function(item, index) {
       var cell = item[columnName]
-      item[columnName] = splitIntoLines(cell, column.width)
+      item[columnName] = splitIntoLines(cell, column.width, wcwidth)
 
       // if truncating required, only include first line + add truncation char
       if (column.truncate && item[columnName].length > 1) {
-          item[columnName] = splitIntoLines(cell, column.width - column.truncateMarker.wcwidth)
+          item[columnName] = splitIntoLines(cell, column.width - wcwidth(column.truncateMarker), wcwidth)
           var firstLine = item[columnName][0]
           if (!endsWith(firstLine, column.truncateMarker)) item[columnName][0] += column.truncateMarker
           item[columnName] = item[columnName].slice(0, 1)
@@ -133,7 +138,7 @@ module.exports = function(items, options) {
     var column = columns[columnName]
     column.width = items.map(function(item) {
       return item[columnName].reduce(function(min, cur) {
-        return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur.wcwidth)))
+        return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, wcwidth(cur))))
       }, 0)
     }).reduce(function(min, cur) {
       return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur)))
@@ -141,8 +146,7 @@ module.exports = function(items, options) {
   })
 
 
-  var rows = createRows(items, columns, columnNames) // merge lines into rows
-
+  var rows = createRows(items, columns, columnNames, wcwidth) // merge lines into rows
   // conceive output
   return rows.reduce(function(output, row) {
     return output.concat(row.reduce(function(rowOut, line) {
@@ -160,7 +164,7 @@ module.exports = function(items, options) {
  * @return Array items wrapped in arrays, corresponding to lines
  */
 
-function createRows(items, columns, columnNames) {
+function createRows(items, columns, columnNames, wcwidth) {
   return items.map(function(item) {
     var row = []
     var numLines = 0
@@ -173,7 +177,7 @@ function createRows(items, columns, columnNames) {
       columnNames.forEach(function(columnName) {
         var column = columns[columnName]
         var val = item[columnName][i] || '' // || '' ensures empty columns get padded
-        row[i].push(padRight(val, column.width))
+        row[i].push(padRight(val, column.width, wcwidth))
       })
     }
     return row

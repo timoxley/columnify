@@ -34,6 +34,7 @@ test('truncation character is configurable', function(t) {
 test('truncation character can be multichar', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/truncate-multichar-expected.txt', 'utf8')
+
   t.equal(columnify(data, {
     truncateMarker: '...',
     truncate: true,
