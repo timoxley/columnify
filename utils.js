@@ -1,6 +1,6 @@
-function defaultWcwidth(str) {
-  return str.length
-}
+"use strict"
+
+var wcwidth = require('wcwidth.js')({ mokeypatch: false })
 
 /**
  * Pad `str` up to total length `max` with `chr`.
@@ -12,11 +12,7 @@ function defaultWcwidth(str) {
  * @return String padded str
  */
 
-function padRight(str, max, chr, wcwidth) {
-  if(typeof chr == 'function' && wcwidth === undefined)
-    wcwidth = chr, chr = undefined
-  
-  wcwidth = wcwidth || defaultWcwidth
+function padRight(str, max, chr) {
   str = str != null ? str : ''
   str = String(str)
   var length = 1 + max - wcwidth(str)
@@ -34,8 +30,7 @@ function padRight(str, max, chr, wcwidth) {
  * @return Array Array containing lines.
  */
 
-function splitIntoLines(str, max, wcwidth) {
-  wcwidth = wcwidth || defaultWcwidth
+function splitIntoLines(str, max) {
   return str.trim().split(' ').reduce(function(lines, word) {
     var line = lines[lines.length - 1]
     if (line && wcwidth(line.join(' ')) + wcwidth(word) < max) {
@@ -58,11 +53,7 @@ function splitIntoLines(str, max, wcwidth) {
  * @return String
  */
 
-function splitLongWords(str, max, truncationChar, result, wcwidth) {
-  if(typeof result == 'function' && wcwidth === undefined)
-    wcwidth = result, result = undefined
-
-  wcwidth = wcwidth || defaultWcwidth
+function splitLongWords(str, max, truncationChar, result) {
   str = str.trim()
   result = result || []
   if (!str) return result.join(' ') || ''
@@ -88,7 +79,7 @@ function splitLongWords(str, max, truncationChar, result, wcwidth) {
     word += truncationChar // add trailing … or whatever
   }
   result.push(word)
-  return splitLongWords(words.join(' '), max, truncationChar, result, wcwidth)
+  return splitLongWords(words.join(' '), max, truncationChar, result)
 }
 
 /**

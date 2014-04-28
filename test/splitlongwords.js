@@ -32,5 +32,5 @@ test('ignores/strips leading whitespace', function(t) {
 
 test('multibytes characters', function(t) {
   t.plan(1)
-  t.equal(splitLongWords('cow 开汽车 mouse 안녕하세요', 3, '…', [], require('wcwidth.js')()), 'cow 开… 汽… 车 mo… use 안… 녕… 하… 세… 요')
+  t.equal(splitLongWords('cow 开汽车 mouse 안녕하세요', 3, '…'), 'cow 开… 汽… 车 mo… use 안… 녕… 하… 세… 요')
 })
