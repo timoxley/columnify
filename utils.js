@@ -1,3 +1,7 @@
+"use strict"
+
+var wcwidth = require('wcwidth.js')({ mokeypatch: false })
+
 /**
  * Pad `str` up to total length `max` with `chr`.
  * If `str` is longer than `max`, padRight will return `str` unaltered.
@@ -11,7 +15,7 @@
 function padRight(str, max, chr) {
   str = str != null ? str : ''
   str = String(str)
-  var length = 1 + max - str.length
+  var length = 1 + max - wcwidth(str)
   if (length <= 0) return str
   return str + Array.apply(null, {length: length})
   .join(chr || ' ')
@@ -29,7 +33,7 @@ function padRight(str, max, chr) {
 function splitIntoLines(str, max) {
   return str.trim().split(' ').reduce(function(lines, word) {
     var line = lines[lines.length - 1]
-    if (line && line.join(' ').length + word.length < max) {
+    if (line && wcwidth(line.join(' ')) + wcwidth(word) < max) {
       lines[lines.length - 1].push(word) // add to line
     }
     else lines.push([word]) // new line
@@ -55,12 +59,23 @@ function splitLongWords(str, max, truncationChar, result) {
   if (!str) return result.join(' ') || ''
   var words = str.split(' ')
   var word = words.shift() || str
+  if (wcwidth(word) > max) {
+    // slice is based on length no wcwidth
+    var i = 0
+    var wwidth = 0
+    var limit = max - wcwidth(truncationChar)
+    while (i < word.length) {
+      var w = wcwidth(word.charAt(i))
+      if(w + wwidth > limit)
+        break
+      wwidth += w
+      ++i
+    }
 
-  if (word.length > max) {
-    var remainder = word.slice(max - truncationChar.length) // get remainder
+    var remainder = word.slice(i) // get remainder
     words.unshift(remainder) // save remainder for next loop
 
-    word = word.slice(0, max - truncationChar.length) // grab truncated word
+    word = word.slice(0, i) // grab truncated word
     word += truncationChar // add trailing … or whatever
   }
   result.push(word)

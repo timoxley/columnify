@@ -11,6 +11,10 @@ var data = [{
   name: 'module2',
   description: 'another description',
   version: '0.2.0',
+}, {
+  name: 'module3',
+  description: '这是一段描述',
+  version: '0.3.2'
 }]
 
 
@@ -25,7 +29,7 @@ test('column data can be transformed', function(t) {
 })
 
 test('column data can be transformed on a per-column basis', function(t) {
-  t.plan(3)
+  t.plan(4)
   var result = columnify(data, {
     config: {
       name: {
@@ -37,6 +41,7 @@ test('column data can be transformed on a per-column basis', function(t) {
   })
   t.ok(result.indexOf('MODULE1') !== -1, 'Module1 name was transformed')
   t.ok(result.indexOf('MODULE2') !== -1, 'Module2 name was transformed')
+  t.ok(result.indexOf('MODULE3') !== -1, 'Module3 name was transformed')
   t.ok(result.indexOf('another description') !== -1, 'Description was not transformed')
 })
 

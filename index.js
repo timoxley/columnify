@@ -1,5 +1,6 @@
 "use strict"
 
+var wcwidth = require('wcwidth.js')({ mokeypatch: false })
 var utils = require('./utils')
 var padRight = utils.padRight
 var splitIntoLines = utils.splitIntoLines
@@ -97,7 +98,7 @@ module.exports = function(items, options) {
     column.width = items.map(function(item) {
       return item[columnName]
     }).reduce(function(min, cur) {
-      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur.length)))
+      return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, wcwidth(cur))))
     }, 0)
   })
 
@@ -119,7 +120,7 @@ module.exports = function(items, options) {
 
       // if truncating required, only include first line + add truncation char
       if (column.truncate && item[columnName].length > 1) {
-          item[columnName] = splitIntoLines(cell, column.width - column.truncateMarker.length)
+          item[columnName] = splitIntoLines(cell, column.width - wcwidth(column.truncateMarker))
           var firstLine = item[columnName][0]
           if (!endsWith(firstLine, column.truncateMarker)) item[columnName][0] += column.truncateMarker
           item[columnName] = item[columnName].slice(0, 1)
@@ -133,15 +134,15 @@ module.exports = function(items, options) {
     var column = columns[columnName]
     column.width = items.map(function(item) {
       return item[columnName].reduce(function(min, cur) {
-        return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur.length)))
+        return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, wcwidth(cur))))
       }, 0)
     }).reduce(function(min, cur) {
       return Math.max(min, Math.min(column.maxWidth, Math.max(column.minWidth, cur)))
     }, 0)
   })
 
-  var rows = createRows(items, columns, columnNames) // merge lines into rows
 
+  var rows = createRows(items, columns, columnNames) // merge lines into rows
   // conceive output
   return rows.reduce(function(output, row) {
     return output.concat(row.reduce(function(rowOut, line) {
