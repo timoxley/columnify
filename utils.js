@@ -82,6 +82,37 @@ function splitLongWords(str, max, truncationChar, result) {
   return splitLongWords(words.join(' '), max, truncationChar, result)
 }
 
+
+/**
+ * Truncate `str` into total width `max`
+ * If `str` is shorter than `max`,  will return `str` unaltered.
+ *
+ * @param String str string to truncated
+ * @param Number max total wcwidth of output string
+ * @return String truncated str
+ */
+
+function truncateString(str, max) {
+
+  str = str != null ? str : ''
+  str = String(str)
+
+  if(max == Infinity) return str
+
+  var i = 0
+  var wwidth = 0
+  while (i < str.length) {
+    var w = wcwidth(str.charAt(i))
+    if(w + wwidth > max)
+      break
+    wwidth += w
+    ++i
+  }
+  return str.slice(0, i)
+}
+
+
+
 /**
  * Exports
  */
@@ -89,3 +120,5 @@ function splitLongWords(str, max, truncationChar, result) {
 module.exports.padRight = padRight
 module.exports.splitIntoLines = splitIntoLines
 module.exports.splitLongWords = splitLongWords
+module.exports.truncateString = truncateString
+
