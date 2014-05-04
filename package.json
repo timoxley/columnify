@@ -10,7 +10,7 @@
   "license": "MIT",
   "devDependencies": {
     "faucet": "0.0.1",
-    "tape": "^2.12.3"
+    "tape": "~2.12.3"
   },
   "repository": {
     "type": "git",
