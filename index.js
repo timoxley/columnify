@@ -1,6 +1,6 @@
 "use strict"
 
-var wcwidth = require('wcwidth.js')({ mokeypatch: false })
+var wcwidth = require('wcwidth.js')({ monkeypatch: false })
 var utils = require('./utils')
 var padRight = utils.padRight
 var splitIntoLines = utils.splitIntoLines

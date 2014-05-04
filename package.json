@@ -4,13 +4,13 @@
   "description": "Render data in text columns, supports in-column text-wrap.",
   "main": "index.js",
   "scripts": {
-    "test": "tap test"
+    "test": "faucet"
   },
   "author": "Tim Oxley",
   "license": "MIT",
   "devDependencies": {
-    "tape": "~2.3.0",
-    "tap": "~0.4.6"
+    "faucet": "0.0.1",
+    "tape": "^2.12.3"
   },
   "repository": {
     "type": "git",
