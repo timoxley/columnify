@@ -2,7 +2,7 @@ var test = require('tape')
 var fs = require('fs')
 
 var columnify =  require('../')
-       
+
 var data = [{
   name: 'alongnameshouldbesplitovermultiplelines',
   description: 'some description',
@@ -24,7 +24,7 @@ var data = [{
 test('specific columns can be truncated, while others not', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/truncate-column-expected.txt', 'utf8')
- 
+
   t.equal(columnify(data, {
     config: {
       name: {
@@ -40,4 +40,7 @@ test('specific columns can be truncated, while others not', function(t) {
   }).trim(), expected.trim())
 })
 
-
+test('string proto does not get polluted by wcwidth', function(t) {
+  t.equal(String.prototype.wcwidth, undefined)
+  t.end()
+})

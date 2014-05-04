@@ -1,6 +1,6 @@
 "use strict"
 
-var wcwidth = require('wcwidth.js')({ mokeypatch: false })
+var wcwidth = require('wcwidth.js')({ monkeypatch: false })
 
 /**
  * Pad `str` up to total length `max` with `chr`.
