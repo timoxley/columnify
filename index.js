@@ -5,6 +5,7 @@ var utils = require('./utils')
 var padRight = utils.padRight
 var splitIntoLines = utils.splitIntoLines
 var splitLongWords = utils.splitLongWords
+var truncateString = utils.truncateString
 
 var DEFAULTS = {
   maxWidth: Infinity,
@@ -26,6 +27,9 @@ module.exports = function(items, options) {
 
   var columnConfigs = options.config || {}
   delete options.config // remove config so doesn't appear on every column.
+
+  var maxLineWidth = options.maxLineWidth || Infinity
+  delete options.maxLineWidth // this is a line control option, don't pass it to column
 
   // Option defaults inheritance:
   // options.config[columnName] => options => DEFAULTS
@@ -148,7 +152,9 @@ module.exports = function(items, options) {
     return output.concat(row.reduce(function(rowOut, line) {
       return rowOut.concat(line.join(options.columnSplitter))
     }, []))
-  }, []).join(options.spacing)
+  }, []).map(function(line) {
+    return truncateString(line, maxLineWidth)
+  }).join(options.spacing)
 }
 
 /**
