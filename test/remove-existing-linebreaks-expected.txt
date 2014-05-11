@@ -1,0 +1,4 @@
+NAME              PATHS                                                                 
+glob@3.2.9        node_modules/tap/node_modules/glob node_modules/tape/node_modules/glob
+nopt@2.2.1        node_modules/tap/node_modules/nopt                                    
+runforcover@0.0.2 node_modules/tap/node_modules/runforcover                             

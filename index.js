@@ -1,6 +1,6 @@
 "use strict"
 
-var wcwidth = require('wcwidth.js')({ monkeypatch: false })
+var wcwidth = require('wcwidth.js')({ monkeypatch: false, control: 0 })
 var utils = require('./utils')
 var padRight = utils.padRight
 var splitIntoLines = utils.splitIntoLines
@@ -13,6 +13,7 @@ var DEFAULTS = {
   columnSplitter: ' ',
   truncate: false,
   truncateMarker: '…',
+  preserveNewLines: false,
   headingTransform: function(key) {
     return key.toUpperCase()
   },
@@ -37,6 +38,7 @@ module.exports = function(items, options) {
   options.config = options.config || Object.create(null)
 
   options.spacing = options.spacing || '\n' // probably useless
+  options.preserveNewLines = !!options.preserveNewLines
 
   var columnNames = options.include || [] // optional user-supplied columns to include
 
@@ -72,8 +74,13 @@ module.exports = function(items, options) {
       result[columnName] = item[columnName] != null ? item[columnName] : ''
       // toString everything
       result[columnName] = '' + result[columnName]
-      // remove funky chars
-      result[columnName] = result[columnName].replace(/\s+/g, " ")
+      if (columns[columnName].preserveNewLines) {
+        // merge non-newline whitespace chars
+        result[columnName] = result[columnName].replace(/[^\S\n]/gmi, ' ')
+      } else {
+        // merge all whitespace chars
+        result[columnName] = result[columnName].replace(/\s/gmi, ' ')
+      }
     })
     return result
   })

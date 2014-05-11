@@ -36,3 +36,23 @@ test('can put multiple words per line', function(t) {
     'mat'
   ])
 })
+
+test('single existing newline is preserved', function(t) {
+  t.plan(1)
+  t.deepEqual(splitIntoLines('dog\n cat cow bat mat', 7), [
+    'dog',
+    'cat cow',
+    'bat mat'
+  ])
+})
+
+test('multiple existing newlines are preserved', function(t) {
+  t.plan(1)
+  t.deepEqual(splitIntoLines('dog\n\n cat\n cow \nbat mat', 7), [
+    'dog',
+    '',
+    'cat',
+    'cow',
+    'bat mat'
+  ])
+})

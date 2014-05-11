@@ -1,6 +1,6 @@
 "use strict"
 
-var wcwidth = require('wcwidth.js')({ monkeypatch: false })
+var wcwidth = require('wcwidth.js')({ monkeypatch: false, control: 0 })
 
 /**
  * Pad `str` up to total length `max` with `chr`.
@@ -23,7 +23,7 @@ function padRight(str, max, chr) {
 
 /**
  * Split a String `str` into lines of maxiumum length `max`.
- * Splits on word boundaries.
+ * Splits on word boundaries. Preserves existing new lines.
  *
  * @param String str string to split
  * @param Number max length of each line
@@ -31,16 +31,23 @@ function padRight(str, max, chr) {
  */
 
 function splitIntoLines(str, max) {
-  return str.trim().split(' ').reduce(function(lines, word) {
-    var line = lines[lines.length - 1]
-    if (line && wcwidth(line.join(' ')) + wcwidth(word) < max) {
-      lines[lines.length - 1].push(word) // add to line
-    }
-    else lines.push([word]) // new line
-    return lines
-  }, []).map(function(l) {
-    return l.join(' ')
-  })
+  function _splitIntoLines(str, max) {
+    return str.trim().split(' ').reduce(function(lines, word) {
+      var line = lines[lines.length - 1]
+      if (line && wcwidth(line.join(' ')) + wcwidth(word) < max) {
+        lines[lines.length - 1].push(word) // add to line
+      }
+      else lines.push([word]) // new line
+      return lines
+    }, []).map(function(l) {
+      return l.join(' ')
+    })
+  }
+  return str.split('\n').map(function(str) {
+    return _splitIntoLines(str, max)
+  }).reduce(function(lines, line) {
+    return lines.concat(line)
+  }, [])
 }
 
 /**
