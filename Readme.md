@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/timoxley/columnify.png?branch=master)](https://travis-ci.org/timoxley/columnify)
 
-Create text-based columns suitable for console output. 
+Create text-based columns suitable for console output.
 Supports minimum and maximum column widths via truncation and text wrapping.
 
 Designed to [handle sensible wrapping in npm search results](https://github.com/isaacs/npm/pull/2328).
