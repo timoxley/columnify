@@ -184,6 +184,43 @@ NAME    VERSION
 module1 0.0.1
 module2 0.2.0
 ```
+
+### Multibyte Characters
+
+`columnify` uses [mycoboco/wcwidth.js](https://github.com/mycoboco/wcwidth.js) to calculate length of multibyte characters:
+
+```js
+var data = [{
+  name: 'module-one',
+  description: 'some description',
+  version: '0.0.1',
+}, {
+  name: '这是一个很长的名字的模块',
+  description: '这真的是一个描述的内容这个描述很长',
+  version: "0.3.3"
+}]
+
+console.log(columnify(data))
+```
+
+#### Output without multibyte handling
+
+i.e. before columnify added this feature
+
+```
+NAME         DESCRIPTION       VERSION
+module-one   some description  0.0.1
+这是一个很长的名字的模块 这真的是一个描述的内容这个描述很长 0.3.3
+```
+
+#### Output with multibyte handling
+
+```
+NAME                     DESCRIPTION                        VERSION
+module-one               some description                   0.0.1
+这是一个很长的名字的模块 这真的是一个描述的内容这个描述很长 0.3.3
+```
+
 ## License
 
 MIT
