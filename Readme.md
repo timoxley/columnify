@@ -2,8 +2,12 @@
 
 [![Build Status](https://travis-ci.org/timoxley/columnify.png?branch=master)](https://travis-ci.org/timoxley/columnify)
 
-Create text-based columns suitable for console output.
-Supports minimum and maximum column widths via truncation and text wrapping.
+Create text-based columns suitable for console output from objects or
+arrays of objects.
+
+Columns are automatically resized to fit the content of the largest
+cell. Each cell will be padded with spaces to fill the available space
+and ensure column contents are left-aligned.
 
 Designed to [handle sensible wrapping in npm search results](https://github.com/isaacs/npm/pull/2328).
 
@@ -26,11 +30,6 @@ console.log(columns)
 ```
 
 ## Examples
-
-Text is aligned under column headings. Columns are automatically resized
-to fit the content of the largest cell.  Each cell will be padded with
-spaces to fill the available space and ensure column contents are
-left-aligned.
 
 ### Columnify Objects
 
@@ -56,9 +55,16 @@ mkdirp@0.3.5      2
 sigmund@1.0.0     3
 ```
 
-You can also set **custom column names** using the `columns` key:
+### Custom Column Names
 
 ```javascript
+var data = {
+  "commander@0.6.1": 1,
+  "minimatch@0.2.14": 3,
+  "mkdirp@0.3.5": 2,
+  "sigmund@1.0.0": 3
+}
+
 console.log(columnify(data, {columns: ['MODULE', 'COUNT']}))
 ```
 #### Output:
@@ -124,7 +130,7 @@ module-two another description larger     0.2.0
            than the max
 ```
 
-### Truncated Columns
+### Truncating Column Cells
 
 You can disable wrapping and instead truncate content at the maximum
 column width. Truncation respects word boundaries.  A truncation marker,
@@ -147,52 +153,6 @@ console.log(columns)
 NAME       DESCRIPTION          VERSION
 mod1       some description…    0.0.1  
 module-two another description… 0.2.0  
-```
-
-
-### Custom Truncation Marker
-
-You can change the truncation marker to something other than the default
-`…`.
-
-```javascript
-var columns = columnify(data, {
-  truncate: true,
-  truncateMarker: '>',
-  widths: {
-    description: {
-      maxWidth: 20
-    }
-  }
-})
-
-console.log(columns)
-```
-#### Output:
-```
-NAME       DESCRIPTION          VERSION
-mod1       some description>    0.0.1  
-module-two another description> 0.2.0  
-```
-
-### Custom Column Splitter
-
-If your columns need some bling, you can split columns with custom
-characters.
-
-```javascript
-
-var columns = columnify(data, {
-  columnSplitter: ' | '
-})
-
-console.log(columns)
-```
-#### Output:
-```
-NAME       | DESCRIPTION                                                  | VERSION
-mod1       | some description which happens to be far larger than the max | 0.0.1
-module-two | another description larger than the max                      | 0.2.0
 ```
 
 ### Filtering & Ordering Columns
@@ -227,6 +187,9 @@ NAME    VERSION
 module1 0.0.1
 module2 0.2.0
 ```
+
+
+## Other Configuration Options
 
 ### Preserve existing newlines
 
@@ -277,8 +240,52 @@ nopt@2.2.1        node_modules/tap/node_modules/nopt
 runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 ```
 
+### Custom Truncation Marker
 
-### Multibyte Characters
+You can change the truncation marker to something other than the default
+`…`.
+
+```javascript
+var columns = columnify(data, {
+  truncate: true,
+  truncateMarker: '>',
+  widths: {
+    description: {
+      maxWidth: 20
+    }
+  }
+})
+
+console.log(columns)
+```
+#### Output:
+```
+NAME       DESCRIPTION          VERSION
+mod1       some description>    0.0.1  
+module-two another description> 0.2.0  
+```
+
+### Custom Column Splitter
+
+If your columns need some bling, you can split columns with custom
+characters.
+
+```javascript
+
+var columns = columnify(data, {
+  columnSplitter: ' | '
+})
+
+console.log(columns)
+```
+#### Output:
+```
+NAME       | DESCRIPTION                                                  | VERSION
+mod1       | some description which happens to be far larger than the max | 0.0.1
+module-two | another description larger than the max                      | 0.2.0
+```
+
+## Multibyte Character Support
 
 `columnify` uses [mycoboco/wcwidth.js](https://github.com/mycoboco/wcwidth.js) to calculate length of multibyte characters:
 
@@ -317,4 +324,5 @@ module-one               some description                   0.0.1
 ## License
 
 MIT
+
 
