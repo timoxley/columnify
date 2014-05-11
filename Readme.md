@@ -19,7 +19,7 @@ $ npm install --save columnify@latest
 
 ## Usage
 
-```js
+```javascript
 var columnify = require('columnify')
 var columns = columnify(data, options)
 console.log(columns)
@@ -36,7 +36,7 @@ left-aligned.
 
 Objects are converted to a list of key/value pairs:
 
-```js
+```javascript
 
 var data = {
   "commander@0.6.1": 1,
@@ -47,7 +47,7 @@ var data = {
 
 console.log(columnify(data))
 ```
-
+#### Output:
 ```
 KEY               VALUE
 commander@0.6.1   1
@@ -58,10 +58,10 @@ sigmund@1.0.0     3
 
 You can also set **custom column names** using the `columns` key:
 
-```js
+```javascript
 console.log(columnify(data, {columns: ['MODULE', 'COUNT']}))
 ```
-
+#### Output:
 ```
 MODULE            COUNT
 commander@0.6.1   1
@@ -74,7 +74,7 @@ sigmund@1.0.0     3
 
 Column headings are extracted from the keys in supplied objects.
 
-```js
+```javascript
 var columnify = require('columnify')
 
 var columns = columnify([{
@@ -87,7 +87,7 @@ var columns = columnify([{
 
 console.log(columns)
 ```
-
+#### Output:
 ```
 NAME    VERSION
 mod1    0.0.1  
@@ -101,7 +101,7 @@ columns. Minimum width is also supported. Wrapping will happen at word
 boundaries. Empty cells or those which do not fill the max/min width
 will be padded with spaces.
 
-```js
+```javascript
 
 var columns = columnify([{
   name: 'mod1',
@@ -115,6 +115,7 @@ var columns = columnify([{
 
 console.log(columns)
 ```
+#### Output:
 ```
 NAME       DESCRIPTION                    VERSION
 mod1       some description which happens 0.0.1
@@ -129,7 +130,7 @@ You can disable wrapping and instead truncate content at the maximum
 column width. Truncation respects word boundaries.  A truncation marker,
 `…` will appear next to the last word in any truncated line.
 
-```js
+```javascript
 var columns = columnify(data, {
   truncate: true,
   config: {
@@ -141,7 +142,7 @@ var columns = columnify(data, {
 
 console.log(columns)
 ```
-
+#### Output:
 ```
 NAME       DESCRIPTION          VERSION
 mod1       some description…    0.0.1  
@@ -154,7 +155,7 @@ module-two another description… 0.2.0
 You can change the truncation marker to something other than the default
 `…`.
 
-```js
+```javascript
 var columns = columnify(data, {
   truncate: true,
   truncateMarker: '>',
@@ -167,7 +168,7 @@ var columns = columnify(data, {
 
 console.log(columns)
 ```
-
+#### Output:
 ```
 NAME       DESCRIPTION          VERSION
 mod1       some description>    0.0.1  
@@ -179,7 +180,7 @@ module-two another description> 0.2.0
 If your columns need some bling, you can split columns with custom
 characters.
 
-```js
+```javascript
 
 var columns = columnify(data, {
   columnSplitter: ' | '
@@ -187,6 +188,7 @@ var columns = columnify(data, {
 
 console.log(columns)
 ```
+#### Output:
 ```
 NAME       | DESCRIPTION                                                  | VERSION
 mod1       | some description which happens to be far larger than the max | 0.0.1
@@ -201,7 +203,7 @@ they exist on every object or not.
 To explicitly specify which columns to include, and in which order,
 supply a "columns" or "include" array ("include" is just an alias).
 
-```js
+```javascript
 var data = [{
   name: 'module1',
   description: 'some description',
@@ -219,6 +221,7 @@ var columns = columnify(data, {
 console.log(columns)
 ```
 
+#### Output:
 ```
 NAME    VERSION
 module1 0.0.1
@@ -231,7 +234,7 @@ By default, `columnify` sanitises text by replacing any occurance of 1 or more w
 
 `columnify` can be configured to respect existing new line characters using the `preserveNewLines` option. Note this will still collapse all other whitespace.
 
-```js
+```javascript
 var data = [{
   name: "glob@3.2.9",
   paths: [
@@ -250,6 +253,7 @@ var data = [{
 
 console.log(columnify(data, {preserveNewLines: true}))
 ```
+#### Output:
 ```
 NAME              PATHS
 glob@3.2.9        node_modules/tap/node_modules/glob
@@ -260,7 +264,7 @@ runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 
 Compare this with output without `preserveNewLines`:
 
-```js
+```javascript
 console.log(columnify(data, {preserveNewLines: false}))
 // or just
 console.log(columnify(data))
@@ -278,7 +282,7 @@ runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 
 `columnify` uses [mycoboco/wcwidth.js](https://github.com/mycoboco/wcwidth.js) to calculate length of multibyte characters:
 
-```js
+```javascript
 var data = [{
   name: 'module-one',
   description: 'some description',
@@ -292,7 +296,7 @@ var data = [{
 console.log(columnify(data))
 ```
 
-#### Output without multibyte handling
+#### Without multibyte handling:
 
 i.e. before columnify added this feature
 
@@ -302,7 +306,7 @@ module-one   some description  0.0.1
 这是一个很长的名字的模块 这真的是一个描述的内容这个描述很长 0.3.3
 ```
 
-#### Output with multibyte handling
+#### With multibyte handling:
 
 ```
 NAME                     DESCRIPTION                        VERSION
@@ -313,3 +317,4 @@ module-one               some description                   0.0.1
 ## License
 
 MIT
+
