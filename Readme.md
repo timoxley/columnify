@@ -159,7 +159,7 @@ By default, all properties are converted into columns, whether or not
 they exist on every object or not.
 
 To explicitly specify which columns to include, and in which order,
-supply an "include" array:
+supply a "columns" or "include" array ("include" is just an alias).
 
 ```js
 var data = [{
@@ -173,7 +173,7 @@ var data = [{
 }]
 
 var columns = columnify(data, {
-  include: ['name', 'version'] // note description not included
+  columns: ['name', 'version'] // note description not included
 })
 
 console.log(columns)

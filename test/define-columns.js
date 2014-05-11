@@ -14,10 +14,44 @@ var data = [{
 }]
 
 test('removes description column', function(t) {
-  t.plan(1)
+  t.plan(2)
   var result = columnify(data, {
-    include: ['name', 'version'],
+    columns: ['name', 'version'],
   })
+
+  var columnHeaders = result.split('\n')[0]
+  t.deepEqual(columnHeaders.split(/\s+/), [
+    "NAME",
+    "VERSION"
+  ])
   t.ok(!(/description/gi.test(result)))
 })
 
+test('include == columns', function(t) {
+  t.plan(2)
+  var result = columnify(data, {
+    include: ['name', 'version'],
+  })
+
+  var columnHeaders = result.split('\n')[0]
+  t.deepEqual(columnHeaders.split(/\s+/), [
+    "NAME",
+    "VERSION"
+  ])
+  t.ok(!(/description/gi.test(result)))
+})
+
+test('columns preferred over include if both supplied', function(t) {
+  t.plan(2)
+  var result = columnify(data, {
+    columns: ['name', 'version'],
+    include: ['description'],
+  })
+
+  var columnHeaders = result.split('\n')[0]
+  t.deepEqual(columnHeaders.split(/\s+/), [
+    "NAME",
+    "VERSION"
+  ])
+  t.ok(!(/description/gi.test(result)))
+})

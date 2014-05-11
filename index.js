@@ -39,8 +39,9 @@ module.exports = function(items, options) {
 
   options.spacing = options.spacing || '\n' // probably useless
   options.preserveNewLines = !!options.preserveNewLines
+  options.columns = options.columns || options.include // alias include/columns, prefer columns if supplied
+  var columnNames = options.columns || [] // optional user-supplied columns to include
 
-  var columnNames = options.include || [] // optional user-supplied columns to include
 
   // if not suppled column names, automatically determine columns from data keys
   if (!columnNames.length) {
