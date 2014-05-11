@@ -42,6 +42,7 @@ module.exports = function(items, options) {
   options.columns = options.columns || options.include // alias include/columns, prefer columns if supplied
   var columnNames = options.columns || [] // optional user-supplied columns to include
 
+  items = toArray(items, columnNames)
 
   // if not suppled column names, automatically determine columns from data keys
   if (!columnNames.length) {
@@ -222,4 +223,17 @@ function endsWith(target, searchString, position) {
   position = position - searchString.length;
   var lastIndex = target.lastIndexOf(searchString);
   return lastIndex !== -1 && lastIndex === position;
+}
+
+
+function toArray(items, columnNames) {
+  if (Array.isArray(items)) return items
+  var rows = []
+  for (var key in items) {
+    var item = {}
+    item[columnNames[0] || 'key'] = key
+    item[columnNames[1] || 'value'] = items[key]
+    rows.push(item)
+  }
+  return rows
 }

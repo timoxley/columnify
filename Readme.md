@@ -27,12 +27,70 @@ console.log(columns)
 
 ## Examples
 
-### Simple Columns
-
 Text is aligned under column headings. Columns are automatically resized
 to fit the content of the largest cell.  Each cell will be padded with
 spaces to fill the available space and ensure column contents are
 left-aligned.
+
+### Columnify Objects
+
+```js
+
+var columnify = require('columnify')
+
+var data = {
+  "mocha@1.18.2": 1,
+  "commander@2.0.0": 1,
+  "graceful-fs@2.0.3": 1,
+  "growl@1.7.0": 1,
+  "inherits@2.0.1": 4,
+  "jade@0.26.3": 1,
+  "commander@0.6.1": 1,
+  "minimatch@0.2.14": 3,
+  "mkdirp@0.3.5": 2,
+  "sigmund@1.0.0": 3
+}
+
+console.log(columnify(data))
+```
+
+```
+KEY               VALUE
+mocha@1.18.2      1
+commander@2.0.0   1
+graceful-fs@2.0.3 1
+growl@1.7.0       1
+inherits@2.0.1    4
+jade@0.26.3       1
+commander@0.6.1   1
+minimatch@0.2.14  3
+mkdirp@0.3.5      2
+sigmund@1.0.0     3
+```
+
+#### Custom Column Names
+
+```
+console.log(columnify(data, {columns: ['MODULE', 'COUNT']}))
+```
+
+```
+MODULE            COUNT
+mocha@1.18.2      1
+commander@2.0.0   1
+graceful-fs@2.0.3 1
+growl@1.7.0       1
+inherits@2.0.1    4
+jade@0.26.3       1
+commander@0.6.1   1
+minimatch@0.2.14  3
+mkdirp@0.3.5      2
+sigmund@1.0.0     3
+```
+
+### Columnify Arrays of Objects
+
+Column headings are extracted from the keys in supplied objects.
 
 ```js
 var columnify = require('columnify')
@@ -207,11 +265,17 @@ var data = [{
   name: "runforcover@0.0.2",
   paths: "node_modules/tap/node_modules/runforcover"
 }]
-
-console.log(columnify(data, {preserveNewLines: true}))
 ```
 
+
 ### Without `preserveNewLines`
+
+```js
+console.log(columnify(data, {preserveNewLines: false}))
+// or just
+console.log(columnify(data))
+```
+
 ```
 NAME              PATHS
 glob@3.2.9        node_modules/tap/node_modules/glob node_modules/tape/node_modules/glob
@@ -220,6 +284,10 @@ runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 ```
 
 ### With `preserveNewLines`
+
+```js
+console.log(columnify(data, {preserveNewLines: true}))
+```
 ```
 NAME              PATHS
 glob@3.2.9        node_modules/tap/node_modules/glob
