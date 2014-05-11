@@ -8,14 +8,19 @@ test('lines under max are ok', function(t) {
   t.deepEqual(splitIntoLines('dinosaur cabbages', 32), ['dinosaur cabbages'])
 })
 
-test('lines at max are split', function(t) {
+test('lines at max are ok', function(t) {
   t.plan(1)
-  t.deepEqual(splitIntoLines('dinosaur cabbages', 16), ['dinosaur', 'cabbages'])
+  t.deepEqual(splitIntoLines('dinosaur cabbages', 17), ['dinosaur cabbages'])
+})
+
+test('lines at max with multiple spaces are ok', function(t) {
+  t.plan(1)
+  t.deepEqual(splitIntoLines('dinosaur cabbages mechanic', 26), ['dinosaur cabbages mechanic'])
 })
 
 test('lines over max will be split', function(t) {
   t.plan(1)
-  t.deepEqual(splitIntoLines('dinosaur cabbages', 10), ['dinosaur', 'cabbages'])
+  t.deepEqual(splitIntoLines('dinosaur cabbages', 16), ['dinosaur', 'cabbages'])
 })
 
 test('splits lines under max onto multiple lines', function(t) {
