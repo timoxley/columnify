@@ -34,17 +34,11 @@ left-aligned.
 
 ### Columnify Objects
 
+Objects are converted to a list of key/value pairs:
+
 ```js
 
-var columnify = require('columnify')
-
 var data = {
-  "mocha@1.18.2": 1,
-  "commander@2.0.0": 1,
-  "graceful-fs@2.0.3": 1,
-  "growl@1.7.0": 1,
-  "inherits@2.0.1": 4,
-  "jade@0.26.3": 1,
   "commander@0.6.1": 1,
   "minimatch@0.2.14": 3,
   "mkdirp@0.3.5": 2,
@@ -56,32 +50,20 @@ console.log(columnify(data))
 
 ```
 KEY               VALUE
-mocha@1.18.2      1
-commander@2.0.0   1
-graceful-fs@2.0.3 1
-growl@1.7.0       1
-inherits@2.0.1    4
-jade@0.26.3       1
 commander@0.6.1   1
 minimatch@0.2.14  3
 mkdirp@0.3.5      2
 sigmund@1.0.0     3
 ```
 
-#### Custom Column Names
+You can also set **custom column names** using the `columns` key:
 
-```
+```js
 console.log(columnify(data, {columns: ['MODULE', 'COUNT']}))
 ```
 
 ```
 MODULE            COUNT
-mocha@1.18.2      1
-commander@2.0.0   1
-graceful-fs@2.0.3 1
-growl@1.7.0       1
-inherits@2.0.1    4
-jade@0.26.3       1
 commander@0.6.1   1
 minimatch@0.2.14  3
 mkdirp@0.3.5      2
@@ -105,6 +87,7 @@ var columns = columnify([{
 
 console.log(columns)
 ```
+
 ```
 NAME    VERSION
 mod1    0.0.1  
@@ -119,7 +102,6 @@ boundaries. Empty cells or those which do not fill the max/min width
 will be padded with spaces.
 
 ```js
-var columnify = require('columnify')
 
 var columns = columnify([{
   name: 'mod1',
@@ -265,10 +247,18 @@ var data = [{
   name: "runforcover@0.0.2",
   paths: "node_modules/tap/node_modules/runforcover"
 }]
+
+console.log(columnify(data, {preserveNewLines: true}))
+```
+```
+NAME              PATHS
+glob@3.2.9        node_modules/tap/node_modules/glob
+                  node_modules/tape/node_modules/glob
+nopt@2.2.1        node_modules/tap/node_modules/nopt
+runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 ```
 
-
-### Without `preserveNewLines`
+Compare this with output without `preserveNewLines`:
 
 ```js
 console.log(columnify(data, {preserveNewLines: false}))
@@ -283,18 +273,6 @@ nopt@2.2.1        node_modules/tap/node_modules/nopt
 runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 ```
 
-### With `preserveNewLines`
-
-```js
-console.log(columnify(data, {preserveNewLines: true}))
-```
-```
-NAME              PATHS
-glob@3.2.9        node_modules/tap/node_modules/glob
-                  node_modules/tape/node_modules/glob
-nopt@2.2.1        node_modules/tap/node_modules/nopt
-runforcover@0.0.2 node_modules/tap/node_modules/runforcover
-```
 
 ### Multibyte Characters
 
