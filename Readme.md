@@ -185,6 +185,49 @@ module1 0.0.1
 module2 0.2.0
 ```
 
+### Preserve existing newlines
+
+By default, `columnify` sanitises text by replacing any occurance of 1 or more whitespace characters with a single space.
+
+`columnify` can be configured to respect existing new line characters using the `preserveNewLines` option. Note this will still collapse all other whitespace.
+
+```js
+var data = [{
+  name: "glob@3.2.9",
+  paths: [
+    "node_modules/tap/node_modules/glob",
+    "node_modules/tape/node_modules/glob"
+  ].join('\n')
+}, {
+  name: "nopt@2.2.1",
+  paths: [
+    "node_modules/tap/node_modules/nopt"
+  ]
+}, {
+  name: "runforcover@0.0.2",
+  paths: "node_modules/tap/node_modules/runforcover"
+}]
+
+console.log(columnify(data, {preserveNewLines: true}))
+```
+
+### Without `preserveNewLines`
+```
+NAME              PATHS
+glob@3.2.9        node_modules/tap/node_modules/glob node_modules/tape/node_modules/glob
+nopt@2.2.1        node_modules/tap/node_modules/nopt
+runforcover@0.0.2 node_modules/tap/node_modules/runforcover
+```
+
+### With `preserveNewLines`
+```
+NAME              PATHS
+glob@3.2.9        node_modules/tap/node_modules/glob
+                  node_modules/tape/node_modules/glob
+nopt@2.2.1        node_modules/tap/node_modules/nopt
+runforcover@0.0.2 node_modules/tap/node_modules/runforcover
+```
+
 ### Multibyte Characters
 
 `columnify` uses [mycoboco/wcwidth.js](https://github.com/mycoboco/wcwidth.js) to calculate length of multibyte characters:
