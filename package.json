@@ -9,6 +9,7 @@
   "author": "Tim Oxley",
   "license": "MIT",
   "devDependencies": {
+    "chalk": "^0.4.0",
     "faucet": "0.0.1",
     "tape": "~2.12.3"
   },
@@ -30,6 +31,7 @@
   },
   "homepage": "https://github.com/timoxley/columnify",
   "dependencies": {
+    "strip-ansi": "^0.2.1",
     "wcwidth.js": "~0.0.4"
   },
   "directories": {

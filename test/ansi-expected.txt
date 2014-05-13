@@ -1,0 +1,4 @@
+KEY             VALUE
+mocha@1.18.2    [33m3[39m    
+commander@2.0.0 [32m1[39m    
+debug@0.8.1     [31m6[39m    

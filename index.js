@@ -1,6 +1,6 @@
 "use strict"
 
-var wcwidth = require('wcwidth.js')({ monkeypatch: false, control: 0 })
+var wcwidth = require('./width')
 var utils = require('./utils')
 var padRight = utils.padRight
 var padLeft = utils.padLeft
