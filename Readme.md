@@ -191,6 +191,26 @@ module2 0.2.0
 
 ## Other Configuration Options
 
+### Align Right
+
+```js
+var data = {
+  "mocha@1.18.2": 1,
+  "commander@2.0.0": 1,
+  "debug@0.8.1": 1
+}
+
+columnify(data, {config: {value: {align: 'right'}}})
+```
+
+####  Output:
+```
+KEY                  VALUE
+mocha@1.18.2             1
+commander@2.0.0          1
+debug@0.8.1              1
+```
+
 ### Preserve existing newlines
 
 By default, `columnify` sanitises text by replacing any occurance of 1 or more whitespace characters with a single space.
