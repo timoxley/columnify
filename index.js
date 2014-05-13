@@ -3,6 +3,7 @@
 var wcwidth = require('wcwidth.js')({ monkeypatch: false, control: 0 })
 var utils = require('./utils')
 var padRight = utils.padRight
+var padLeft = utils.padLeft
 var splitIntoLines = utils.splitIntoLines
 var splitLongWords = utils.splitLongWords
 var truncateString = utils.truncateString
@@ -188,7 +189,8 @@ function createRows(items, columns, columnNames) {
       columnNames.forEach(function(columnName) {
         var column = columns[columnName]
         var val = item[columnName][i] || '' // || '' ensures empty columns get padded
-        row[i].push(padRight(val, column.width))
+        if (column.align == 'right') row[i].push(padLeft(val, column.width))
+        else row[i].push(padRight(val, column.width))
       })
     }
     return row
