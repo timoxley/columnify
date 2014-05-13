@@ -26,6 +26,6 @@ var data = {
 test('columns can be aligned right', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/align-right-expected.txt', 'utf8')
-  var actual = columnify(data, {columns: ['key', 'count'], config: {count: {align: 'right'}}})
+  var actual = columnify(data, {config: {value: {align: 'right'}}})
   t.equal(actual.trim(), expected.trim())
 })

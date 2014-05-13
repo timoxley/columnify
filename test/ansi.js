@@ -1,6 +1,10 @@
 var test = require('tape')
 var fs = require('fs')
 var chalk = require('chalk')
+// required when running inside faucet etc
+// as chalk will detect output is not a tty
+// and disable color for you automatically
+chalk.enabled = true
 
 var columnify =  require('../')
 
@@ -13,5 +17,6 @@ var data = {
 test('width calculated correctly even if ansi colors used.', function(t) {
   t.plan(1)
   var expected = fs.readFileSync(__dirname + '/ansi-expected.txt', 'utf8')
-  t.equal(columnify(data).trim(), expected.trim())
+  var actual = columnify(data)
+  t.equal(actual.trim(), expected.trim())
 })
