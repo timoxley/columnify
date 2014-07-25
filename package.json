@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/timoxley/columnify",
   "dependencies": {
-    "strip-ansi": "^0.2.1",
+    "strip-ansi": "^1.0.0",
     "wcwidth.js": "~0.0.4"
   },
   "directories": {
