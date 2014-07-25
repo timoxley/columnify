@@ -31,3 +31,8 @@ test('handling funky data with spaces up to len', function(t) {
   t.equal(padRight(10, 10), '10        ')
   t.equal(padRight([], 10), '          ')
 })
+
+test('pad string with paddingChr up to len', function(t) {
+  t.plan(1)
+  t.equal(padRight('word', 10, '.'), 'word......')
+})
