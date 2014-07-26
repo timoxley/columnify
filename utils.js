@@ -32,6 +32,26 @@ function padRight(str, max, chr) {
 }
 
 /**
+ * Pad `str` up to total length `max` with `chr`.
+ * If `str` is longer than `max`, padCenter will return `str` unaltered.
+ *
+ * @param String str string to pad
+ * @param Number max total length of output string
+ * @param String chr optional. Character to pad with. default: ' '
+ * @return String padded str
+ */
+
+function padCenter(str, max, chr) {
+  str = str != null ? str : ''
+  str = String(str)
+  var length = max - wcwidth(str)
+  if (length <= 0) return str
+  var lengthLeft = Math.floor(length/2)
+  var lengthRight = length - lengthLeft
+  return repeatString(chr || ' ', lengthLeft) + str + repeatString(chr || ' ', lengthRight)
+}
+
+/**
  * Pad `str` up to total length `max` with `chr`, on the left.
  * If `str` is longer than `max`, padRight will return `str` unaltered.
  *
@@ -153,6 +173,7 @@ function truncateString(str, max) {
  */
 
 module.exports.padRight = padRight
+module.exports.padCenter = padCenter
 module.exports.padLeft = padLeft
 module.exports.splitIntoLines = splitIntoLines
 module.exports.splitLongWords = splitLongWords
