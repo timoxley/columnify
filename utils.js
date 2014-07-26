@@ -3,6 +3,17 @@
 var wcwidth = require('./width')
 
 /**
+ * repeat string `str` up to total length of `len`
+ *
+ * @param String str string to repeat
+ * @param Number len total length of output string
+ */
+
+function repeatString(str, len) {
+  return Array.apply(null, {length: len + 1}).join(str).slice(0, len)
+}
+
+/**
  * Pad `str` up to total length `max` with `chr`.
  * If `str` is longer than `max`, padRight will return `str` unaltered.
  *
@@ -15,10 +26,9 @@ var wcwidth = require('./width')
 function padRight(str, max, chr) {
   str = str != null ? str : ''
   str = String(str)
-  var length = 1 + max - wcwidth(str)
+  var length = max - wcwidth(str)
   if (length <= 0) return str
-  return str + Array.apply(null, {length: length})
-  .join(chr || ' ').slice(0, length-1)
+  return str + repeatString(chr || ' ', length)
 }
 
 /**
@@ -34,9 +44,9 @@ function padRight(str, max, chr) {
 function padLeft(str, max, chr) {
   str = str != null ? str : ''
   str = String(str)
-  var length = 1 + max - wcwidth(str)
+  var length = max - wcwidth(str)
   if (length <= 0) return str
-  return Array.apply(null, {length: length}).join(chr || ' ').slice(0, length-1) + str
+  return repeatString(chr || ' ', length) + str
 }
 
 /**
