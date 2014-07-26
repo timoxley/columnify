@@ -36,3 +36,8 @@ test('pad string with paddingChr up to len', function(t) {
   t.plan(1)
   t.equal(padRight('word', 10, '.'), 'word......')
 })
+
+test('pad string with paddingChr of length >1, up to len', function(t) {
+  t.plan(1)
+  t.equal(padRight('words', 10, ' .'), 'words . . ')
+})
