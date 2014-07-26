@@ -18,7 +18,7 @@ function padRight(str, max, chr) {
   var length = 1 + max - wcwidth(str)
   if (length <= 0) return str
   return str + Array.apply(null, {length: length})
-  .join(chr || ' ')
+  .join(chr || ' ').slice(0, length-1)
 }
 
 /**
@@ -36,7 +36,7 @@ function padLeft(str, max, chr) {
   str = String(str)
   var length = 1 + max - wcwidth(str)
   if (length <= 0) return str
-  return Array.apply(null, {length: length}).join(chr || ' ') + str
+  return Array.apply(null, {length: length}).join(chr || ' ').slice(0, length-1) + str
 }
 
 /**
@@ -147,4 +147,3 @@ module.exports.padLeft = padLeft
 module.exports.splitIntoLines = splitIntoLines
 module.exports.splitLongWords = splitLongWords
 module.exports.truncateString = truncateString
-
