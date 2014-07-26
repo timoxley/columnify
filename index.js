@@ -15,6 +15,7 @@ var DEFAULTS = {
   truncate: false,
   truncateMarker: '…',
   preserveNewLines: false,
+  paddingChr: ' ',
   headingTransform: function(key) {
     return key.toUpperCase()
   },
@@ -156,7 +157,7 @@ module.exports = function(items, options) {
   })
 
 
-  var rows = createRows(items, columns, columnNames) // merge lines into rows
+  var rows = createRows(items, columns, columnNames, options.paddingChr) // merge lines into rows
   // conceive output
   return rows.reduce(function(output, row) {
     return output.concat(row.reduce(function(rowOut, line) {
@@ -176,7 +177,7 @@ module.exports = function(items, options) {
  * @return Array items wrapped in arrays, corresponding to lines
  */
 
-function createRows(items, columns, columnNames) {
+function createRows(items, columns, columnNames, paddingChr) {
   return items.map(function(item) {
     var row = []
     var numLines = 0
@@ -189,8 +190,8 @@ function createRows(items, columns, columnNames) {
       columnNames.forEach(function(columnName) {
         var column = columns[columnName]
         var val = item[columnName][i] || '' // || '' ensures empty columns get padded
-        if (column.align == 'right') row[i].push(padLeft(val, column.width))
-        else row[i].push(padRight(val, column.width))
+        if (column.align == 'right') row[i].push(padLeft(val, column.width, paddingChr))
+        else row[i].push(padRight(val, column.width, paddingChr))
       })
     }
     return row
