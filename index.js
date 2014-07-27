@@ -3,6 +3,7 @@
 var wcwidth = require('./width')
 var utils = require('./utils')
 var padRight = utils.padRight
+var padCenter = utils.padCenter
 var padLeft = utils.padLeft
 var splitIntoLines = utils.splitIntoLines
 var splitLongWords = utils.splitLongWords
@@ -191,6 +192,7 @@ function createRows(items, columns, columnNames, paddingChr) {
         var column = columns[columnName]
         var val = item[columnName][i] || '' // || '' ensures empty columns get padded
         if (column.align == 'right') row[i].push(padLeft(val, column.width, paddingChr))
+        else if (column.align == 'center') row[i].push(padCenter(val, column.width, paddingChr))
         else row[i].push(padRight(val, column.width, paddingChr))
       })
     }
