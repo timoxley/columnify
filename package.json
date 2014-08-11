@@ -1,6 +1,6 @@
 {
   "name": "columnify",
-  "version": "1.2.0-alpha",
+  "version": "1.2.0",
   "description": "Render data in text columns, supports in-column text-wrap.",
   "main": "index.js",
   "scripts": {
