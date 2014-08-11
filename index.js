@@ -17,6 +17,7 @@ var DEFAULTS = {
   truncateMarker: '…',
   preserveNewLines: false,
   paddingChr: ' ',
+  showHeaders: true,
   headingTransform: function(key) {
     return key.toUpperCase()
   },
@@ -42,6 +43,7 @@ module.exports = function(items, options) {
 
   options.spacing = options.spacing || '\n' // probably useless
   options.preserveNewLines = !!options.preserveNewLines
+  options.showHeaders = !!options.showHeaders;
   options.columns = options.columns || options.include // alias include/columns, prefer columns if supplied
   var columnNames = options.columns || [] // optional user-supplied columns to include
 
@@ -101,12 +103,13 @@ module.exports = function(items, options) {
 
   // add headers
   var headers = {}
-  columnNames.forEach(function(columnName) {
-    var column = columns[columnName]
-    headers[columnName] = column.headingTransform(columnName)
-  })
-  items.unshift(headers)
-
+  if(options.showHeaders) {
+    columnNames.forEach(function(columnName) {
+      var column = columns[columnName]
+      headers[columnName] = column.headingTransform(columnName)
+    })
+    items.unshift(headers)
+  }
   // get actual max-width between min & max
   // based on length of data in columns
   columnNames.forEach(function(columnName) {
