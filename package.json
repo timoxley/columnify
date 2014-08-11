@@ -4,6 +4,7 @@
   "description": "Render data in text columns, supports in-column text-wrap.",
   "main": "index.js",
   "scripts": {
+    "pretest": "npm prune",
     "test": "faucet"
   },
   "author": "Tim Oxley",
