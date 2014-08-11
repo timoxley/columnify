@@ -32,7 +32,7 @@
   "homepage": "https://github.com/timoxley/columnify",
   "dependencies": {
     "strip-ansi": "^1.0.0",
-    "wcwidth.js": "~0.0.4"
+    "wcwidth": "^1.0.0"
   },
   "directories": {
     "test": "test"
