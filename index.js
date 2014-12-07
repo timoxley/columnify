@@ -68,9 +68,11 @@ module.exports = function(items, options) {
   // sanitize column settings
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
+    column.name = columnName
     column.maxWidth = Math.ceil(column.maxWidth)
     column.minWidth = Math.ceil(column.minWidth)
     column.truncate = !!column.truncate
+    column.align = column.align || 'left'
   })
 
   // sanitize data
@@ -106,7 +108,7 @@ module.exports = function(items, options) {
   if(options.showHeaders) {
     columnNames.forEach(function(columnName) {
       var column = columns[columnName]
-      headers[columnName] = column.headingTransform(columnName)
+      headers[columnName] = column.headingTransform(column.name)
     })
     items.unshift(headers)
   }
