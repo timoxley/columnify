@@ -15,3 +15,10 @@ test('columns can be aligned to the center', function(t) {
   var actual = columnify(data, { paddingChr: '.', config: {value: {align: 'center'}}})
   t.equal(actual.trim(), expected.trim())
 })
+
+test('columns can be aligned to the centre using the correct spelling of centre', function(t) {
+  t.plan(1)
+  var expected = fs.readFileSync(__dirname + '/align-center-expected.txt', 'utf8')
+  var actual = columnify(data, { paddingChr: '.', config: {value: {align: 'centre'}}})
+  t.equal(actual.trim(), expected.trim())
+})

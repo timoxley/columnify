@@ -211,8 +211,8 @@ function createRows(items, columns, columnNames, paddingChr) {
       columnNames.forEach(function(columnName) {
         var column = columns[columnName]
         var val = item[columnName][i] || '' // || '' ensures empty columns get padded
-        if (column.align == 'right') row[i].push(padLeft(val, column.width, paddingChr))
-        else if (column.align == 'center') row[i].push(padCenter(val, column.width, paddingChr))
+        if (column.align === 'right') row[i].push(padLeft(val, column.width, paddingChr))
+        else if (column.align === 'center' || column.align === 'centre') row[i].push(padCenter(val, column.width, paddingChr))
         else row[i].push(padRight(val, column.width, paddingChr))
       })
     }
