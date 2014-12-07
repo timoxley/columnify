@@ -9,6 +9,14 @@ var splitIntoLines = utils.splitIntoLines
 var splitLongWords = utils.splitLongWords
 var truncateString = utils.truncateString
 
+var DEFAULT_HEADING_TRANSFORM = function(key) {
+  return key.toUpperCase()
+}
+
+var DEFAULT_DATA_TRANSFORM = function(cell, column, index) {
+  return cell
+}
+
 var DEFAULTS = {
   maxWidth: Infinity,
   minWidth: 0,
@@ -18,12 +26,8 @@ var DEFAULTS = {
   preserveNewLines: false,
   paddingChr: ' ',
   showHeaders: true,
-  headingTransform: function(key) {
-    return key.toUpperCase()
-  },
-  dataTransform: function(cell, column, index) {
-    return cell
-  }
+  headingTransform: DEFAULT_HEADING_TRANSFORM,
+  dataTransform: DEFAULT_DATA_TRANSFORM
 }
 
 module.exports = function(items, options) {
@@ -98,7 +102,18 @@ module.exports = function(items, options) {
   columnNames.forEach(function(columnName) {
     var column = columns[columnName]
     items = items.map(function(item, index) {
-      item[columnName] = column.dataTransform(item[columnName], column, index)
+      var col = Object.create(column)
+      item[columnName] = column.dataTransform(item[columnName], col, index)
+
+      var changedKeys = Object.keys(col)
+      // disable default heading transform if we wrote to column.name
+      if (changedKeys.indexOf('name') !== -1) {
+        if (column.headingTransform !== DEFAULT_HEADING_TRANSFORM) return
+        column.headingTransform = function(heading) {return heading}
+      }
+      changedKeys.forEach(function(key) {
+        column[key] = col[key]
+      })
       return item
     })
   })
