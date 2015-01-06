@@ -326,6 +326,17 @@ mod1       | some description which happens to be far larger than the max | 0.0.
 module-two | another description larger than the max                      | 0.2.0
 ```
 
+### Do not show headers
+
+Prevent columns headers from showing with:
+
+```javascript
+
+var columns = columnify(data, {
+  showHeaders: false
+})
+```
+
 ## Multibyte Character Support
 
 `columnify` uses [mycoboco/wcwidth.js](https://github.com/mycoboco/wcwidth.js) to calculate length of multibyte characters:
