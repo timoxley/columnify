@@ -119,7 +119,7 @@ var data = [{
 }]
 
 var columns = columnify(data, {
-  columns: ['name', 'version'] // note description not included
+  columns: ['name', 'version']
 })
 
 console.log(columns)
@@ -135,7 +135,7 @@ module2 0.2.0
 ## Global and Per Column Options
 You can set a number of options at a global level (ie. for all columns) or on a per column basis.
 
-Set options on a per column basis by using the `config` option to specify individual columns. (See examples below).
+Set options on a per column basis by using the `config` option to specify individual columns:
 
 ```javascript
 var columns = columnify(data, {
@@ -144,7 +144,7 @@ var columns = columnify(data, {
     columnName: {optionName: optionValue},
     columnName: {optionName: optionValue},
   }
-});
+})
 ```
 
 ### Maximum and Minimum Column Widths
@@ -164,9 +164,9 @@ var columns = columnify([{
   config: {
     description: {maxWidth: 30} // the description has a maxWidth of 30 chars
   } 
-});
+})
 
-console.log(columns);
+console.log(columns)
 ```
 
 #### Output:
@@ -362,23 +362,23 @@ var columns = columnify([{
     description: 'SOME SLIGHTLY LONGER DESCRIPTION TEXT.'
 }], {
     dataTransform: function(data) {
-        return data.toLowerCase();
+        return data.toLowerCase()
     },
     config: {
         name: {
             headingTransform: function(heading) {
-              heading = "module " + heading;
-              return "\u001b[32m" +  heading.toUpperCase() + "\u001b[39m";// green header
+              heading = "module " + heading
+              return "*" +  heading.toUpperCase() + "*"
             }
         }
     }
-});
+})
 ```
 #### Output:
 ```
-MODULE NAME DESCRIPTION                           
-mod1        some description text.                
-module-two  some slightly longer description text.
+*MODULE NAME* DESCRIPTION                           
+mod1          some description text.                
+module-two    some slightly longer description text.
 ```
 
 
