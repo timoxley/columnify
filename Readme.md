@@ -148,7 +148,7 @@ var columns = columnify(data, {
 ```
 
 ### Maximum and Minimum Column Widths
-You can define the `maxWidth` and `minWidth` globally, or for specified columns. By default wrapping will happen at word boundaries. Empty cells or those which do not fill the `maxWidth`/`minWidth` will be padded with spaces.
+As with all options, you can define the `maxWidth` and `minWidth` globally, or for specified columns. By default, wrapping will happen at word boundaries. Empty cells or those which do not fill the `minWidth` will be padded with spaces.
 
 ```javascript
 var columns = columnify([{
@@ -181,8 +181,7 @@ module-two           another description larger     0.2.0
 #### Truncating Column Cells Instead of Wrapping
 
 You can disable wrapping and instead truncate content at the maximum
-column width by using the `truncate` option. Truncation respects word boundaries.  A truncation marker,
-`…` will appear next to the last word in any truncated line.
+column width by using the `truncate` option. Truncation respects word boundaries.  A truncation marker, `…`, will appear next to the last word in any truncated line.
 
 ```javascript
 var columns = columnify(data, {
