@@ -340,9 +340,9 @@ mod1       | some description which happens to be far larger than the max | 0.0.
 module-two | another description larger than the max                      | 0.2.0
 ```
 
-### Do not show headers
+### Control Header Display
 
-Control whether column header are displayed by using the `showHeaders` option.
+Control whether column headers are displayed by using the `showHeaders` option.
 
 ```javascript
 var columns = columnify(data, {
