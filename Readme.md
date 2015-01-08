@@ -160,9 +160,9 @@ var columns = columnify([{
   description: 'another description larger than the max',
   version: '0.2.0',
 }], {
-  minWidth: 20, // all columns have a minWidth of 20 chars
+  minWidth: 20,
   config: {
-    description: {maxWidth: 30} // the description has a maxWidth of 30 chars
+    description: {maxWidth: 30}
   } 
 })
 
