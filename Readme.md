@@ -100,12 +100,12 @@ mod1    0.0.1
 module2 0.2.0  
 ```
 
-### Wrapping Column Cells
 
-You can define the maximum width before wrapping for individual cells in
-columns. Minimum width is also supported. Wrapping will happen at word
-boundaries. Empty cells or those which do not fill the max/min width
-will be padded with spaces.
+### Setting Global and Per Column Options
+
+
+### Maximum and Minimum Column Widths
+You can define the `maxWidth` and `minWidth` globally, or for specified columns. By default wrapping will happen at word boundaries. Empty cells or those which do not fill the `maxWidth`/`minWidth` will be padded with spaces.
 
 ```javascript
 
@@ -117,20 +117,24 @@ var columns = columnify([{
   name: 'module-two',
   description: 'another description larger than the max',
   version: '0.2.0',
-})
+}], {
+  minWidth: 20, // all columns have a minWidth of 20 chars
+  config: {description: {maxWidth: 30}} // the description has a maxWidth of 30 chars
+});
 
-console.log(columns)
+console.log(columns);
 ```
+
 #### Output:
 ```
-NAME       DESCRIPTION                    VERSION
-mod1       some description which happens 0.0.1
-           to be far larger than the max
-module-two another description larger     0.2.0
-           than the max
+NAME                 DESCRIPTION                    VERSION             
+mod1                 some description which happens 0.0.1               
+                     to be far larger than the max                      
+module-two           another description larger     0.2.0               
+                     than the max                         
 ```
 
-### Truncating Column Cells
+#### Truncating Column Cells Instead of Wrapping
 
 You can disable wrapping and instead truncate content at the maximum
 column width. Truncation respects word boundaries.  A truncation marker,
@@ -232,7 +236,7 @@ shortKey................... veryVeryVeryVeryVeryLongVal
 veryVeryVeryVeryVeryLongKey shortVal...................
 ```
 
-### Preserve existing newlines
+### Preserve Existing Newlines
 
 By default, `columnify` sanitises text by replacing any occurance of 1 or more whitespace characters with a single space.
 
@@ -336,6 +340,40 @@ var columns = columnify(data, {
   showHeaders: false
 })
 ```
+
+## Transforming Column Data and Headers
+If you need to modify the presentation of column content or heading content there are two useful options for doing that: `dataTransform` and `headerTransform`. Both of these take a function and must return a string.
+
+```javascript
+var columns = columnify([{
+    name: 'mod1',
+    description: 'some description which happens to be far larger than the max'
+}, {
+    name: 'module-two',
+    description: 'another description larger than the max'
+}], {
+    headingTransform: function(heading) {
+        return heading.charAt(0).toUpperCase() + heading.substring(1).toLowerCase();
+    },
+    dataTransform: function(data) {
+        return data + " \u001b[32m(see description)\u001b[39m"; // adds Green text to the end of the data
+    },
+    config: {
+        name: {
+            dataTransform: function(data) {
+                return data.toUpperCase(); // overrides global dataTransform
+            }
+        }
+    }
+});
+```
+#### Output:
+```
+Name       Description                                                                   
+MOD1       some description which happens to be far larger than the max (see description)
+MODULE-TWO another description larger than the max (see description)   
+```
+
 
 ## Multibyte Character Support
 
