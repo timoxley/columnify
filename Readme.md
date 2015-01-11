@@ -36,7 +36,6 @@ console.log(columns)
 Objects are converted to a list of key/value pairs:
 
 ```javascript
-
 var data = {
   "commander@0.6.1": 1,
   "minimatch@0.2.14": 3,
@@ -100,61 +99,6 @@ mod1    0.0.1
 module2 0.2.0  
 ```
 
-### Wrapping Column Cells
-
-You can define the maximum width before wrapping for individual cells in
-columns. Minimum width is also supported. Wrapping will happen at word
-boundaries. Empty cells or those which do not fill the max/min width
-will be padded with spaces.
-
-```javascript
-
-var columns = columnify([{
-  name: 'mod1',
-  description: 'some description which happens to be far larger than the max',
-  version: '0.0.1',
-}, {
-  name: 'module-two',
-  description: 'another description larger than the max',
-  version: '0.2.0',
-})
-
-console.log(columns)
-```
-#### Output:
-```
-NAME       DESCRIPTION                    VERSION
-mod1       some description which happens 0.0.1
-           to be far larger than the max
-module-two another description larger     0.2.0
-           than the max
-```
-
-### Truncating Column Cells
-
-You can disable wrapping and instead truncate content at the maximum
-column width. Truncation respects word boundaries.  A truncation marker,
-`…` will appear next to the last word in any truncated line.
-
-```javascript
-var columns = columnify(data, {
-  truncate: true,
-  config: {
-    description: {
-      maxWidth: 20
-    }
-  }
-})
-
-console.log(columns)
-```
-#### Output:
-```
-NAME       DESCRIPTION          VERSION
-mod1       some description…    0.0.1  
-module-two another description… 0.2.0  
-```
-
 ### Filtering & Ordering Columns
 
 By default, all properties are converted into columns, whether or not
@@ -175,7 +119,7 @@ var data = [{
 }]
 
 var columns = columnify(data, {
-  columns: ['name', 'version'] // note description not included
+  columns: ['name', 'version']
 })
 
 console.log(columns)
@@ -188,10 +132,79 @@ module1 0.0.1
 module2 0.2.0
 ```
 
+## Global and Per Column Options
+You can set a number of options at a global level (ie. for all columns) or on a per column basis.
 
-## Other Configuration Options
+Set options on a per column basis by using the `config` option to specify individual columns:
+
+```javascript
+var columns = columnify(data, {
+  optionName: optionValue,
+  config: {
+    columnName: {optionName: optionValue},
+    columnName: {optionName: optionValue},
+  }
+})
+```
+
+### Maximum and Minimum Column Widths
+As with all options, you can define the `maxWidth` and `minWidth` globally, or for specified columns. By default, wrapping will happen at word boundaries. Empty cells or those which do not fill the `minWidth` will be padded with spaces.
+
+```javascript
+var columns = columnify([{
+  name: 'mod1',
+  description: 'some description which happens to be far larger than the max',
+  version: '0.0.1',
+}, {
+  name: 'module-two',
+  description: 'another description larger than the max',
+  version: '0.2.0',
+}], {
+  minWidth: 20,
+  config: {
+    description: {maxWidth: 30}
+  } 
+})
+
+console.log(columns)
+```
+
+#### Output:
+```
+NAME                 DESCRIPTION                    VERSION             
+mod1                 some description which happens 0.0.1               
+                     to be far larger than the max                      
+module-two           another description larger     0.2.0               
+                     than the max                         
+```
+
+#### Truncating Column Cells Instead of Wrapping
+
+You can disable wrapping and instead truncate content at the maximum
+column width by using the `truncate` option. Truncation respects word boundaries.  A truncation marker, `…`, will appear next to the last word in any truncated line.
+
+```javascript
+var columns = columnify(data, {
+  truncate: true,
+  config: {
+    description: {
+      maxWidth: 20
+    }
+  }
+})
+
+console.log(columns)
+```
+#### Output:
+```
+NAME       DESCRIPTION          VERSION
+mod1       some description…    0.0.1  
+module-two another description… 0.2.0  
+```
+
 
 ### Align Right/Center
+You can set the alignment of the column data by using the `align` option.
 
 ```js
 var data = {
@@ -211,10 +224,12 @@ commander@2.0.0          1
 debug@0.8.1              1
 ```
 
-Align Center works in a similar way.
+`align: 'center'` works in a similar way.
 
 
-### Padding
+### Padding Character
+
+Set a character to fill whitespace within columns with the `paddingChr` option.
 
 ```js
 var data = {
@@ -232,7 +247,7 @@ shortKey................... veryVeryVeryVeryVeryLongVal
 veryVeryVeryVeryVeryLongKey shortVal...................
 ```
 
-### Preserve existing newlines
+### Preserve Existing Newlines
 
 By default, `columnify` sanitises text by replacing any occurance of 1 or more whitespace characters with a single space.
 
@@ -284,7 +299,7 @@ runforcover@0.0.2 node_modules/tap/node_modules/runforcover
 ### Custom Truncation Marker
 
 You can change the truncation marker to something other than the default
-`…`.
+`…` by using the `truncateMarker` option.
 
 ```javascript
 var columns = columnify(data, {
@@ -309,10 +324,9 @@ module-two another description> 0.2.0
 ### Custom Column Splitter
 
 If your columns need some bling, you can split columns with custom
-characters.
+characters by using the `columnSplitter` option.
 
 ```javascript
-
 var columns = columnify(data, {
   columnSplitter: ' | '
 })
@@ -326,16 +340,47 @@ mod1       | some description which happens to be far larger than the max | 0.0.
 module-two | another description larger than the max                      | 0.2.0
 ```
 
-### Do not show headers
+### Control Header Display
 
-Prevent columns headers from showing with:
+Control whether column headers are displayed by using the `showHeaders` option.
 
 ```javascript
-
 var columns = columnify(data, {
   showHeaders: false
 })
 ```
+
+### Transforming Column Data and Headers
+If you need to modify the presentation of column content or heading content there are two useful options for doing that: `dataTransform` and `headerTransform`. Both of these take a function and need to return a valid string.
+
+```javascript
+var columns = columnify([{
+    name: 'mod1',
+    description: 'SOME DESCRIPTION TEXT.'
+}, {
+    name: 'module-two',
+    description: 'SOME SLIGHTLY LONGER DESCRIPTION TEXT.'
+}], {
+    dataTransform: function(data) {
+        return data.toLowerCase()
+    },
+    config: {
+        name: {
+            headingTransform: function(heading) {
+              heading = "module " + heading
+              return "*" +  heading.toUpperCase() + "*"
+            }
+        }
+    }
+})
+```
+#### Output:
+```
+*MODULE NAME* DESCRIPTION                           
+mod1          some description text.                
+module-two    some slightly longer description text.
+```
+
 
 ## Multibyte Character Support
 
