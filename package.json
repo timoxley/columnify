@@ -1,16 +1,18 @@
 {
   "name": "columnify",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Render data in text columns. supports in-column text-wrap.",
-  "main": "index.js",
+  "main": "columnify.js",
   "scripts": {
     "pretest": "npm prune",
-    "test": "tape test/*.js | tap-spec",
-    "bench": "npm test && node bench"
+    "test": "make prepublish && tape test/*.js | tap-spec",
+    "bench": "npm test && node bench",
+    "prepublish": "make prepublish"
   },
   "author": "Tim Oxley",
   "license": "MIT",
   "devDependencies": {
+    "6to5": "^2.13.7",
     "chalk": "^0.5.1",
     "tap-spec": "^2.1.1",
     "tape": "^3.0.3"
