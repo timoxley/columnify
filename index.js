@@ -38,6 +38,7 @@ module.exports = function(items, options) {
   delete options.config // remove config so doesn't appear on every column.
 
   var maxLineWidth = options.maxLineWidth || Infinity
+  if (maxLineWidth === 'auto') maxLineWidth = process.stdout.columns || Infinity
   delete options.maxLineWidth // this is a line control option, don't pass it to column
 
   // Option defaults inheritance:

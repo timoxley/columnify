@@ -2,11 +2,11 @@ var test = require('tape')
 var fs = require('fs')
 
 var columnify =  require('../')
-       
+
 var data = [{
   name: 'alongnameshouldbesplitovermultiplelines',
   description: 'some description',
-  version: '0.0.1',
+  version: '0.0.1'
 }, {
   name: 'module-two',
   description: 'another description larger than the max',
@@ -22,9 +22,7 @@ var data = [{
 }]
 
 test('specific columns can be truncated, while others not', function(t) {
-  t.plan(2)
   var expected = fs.readFileSync(__dirname + '/truncate-string-maxlinewidth-expected.txt', 'utf8')
-
 
   t.equal(columnify(data, {
     maxLineWidth: 34,
@@ -40,8 +38,10 @@ test('specific columns can be truncated, while others not', function(t) {
       }
     }
   }).trim(), expected.trim())
+  t.end()
+})
 
-  // when no maxLineWidth provides, everything just as before
+test('when no maxLineWidth, nothing is changed', function(t) {
   t.equal(columnify(data, {
     config: {
       name: {
@@ -56,6 +56,23 @@ test('specific columns can be truncated, while others not', function(t) {
     }
   }).trim(), fs.readFileSync(__dirname + '/truncate-column-expected.txt', 'utf8').trim())
 
+  t.end()
 })
 
-
+test('maxLineWidth: "auto" with column max widths', function(t) {
+  t.equal(columnify(data, {
+    maxLineWidth: 'auto',
+    config: {
+      name: {
+        truncate: false,
+        maxWidth: 9,
+        truncateMarker: ''
+      },
+      description: {
+        truncate: true,
+        maxWidth: 20
+      }
+    }
+  }).trim(), fs.readFileSync(__dirname + '/truncate-column-expected.txt', 'utf8').trim())
+  t.end()
+})

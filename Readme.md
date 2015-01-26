@@ -163,7 +163,7 @@ var columns = columnify([{
   minWidth: 20,
   config: {
     description: {maxWidth: 30}
-  } 
+  }
 })
 
 console.log(columns)
@@ -177,6 +177,18 @@ mod1                 some description which happens 0.0.1
 module-two           another description larger     0.2.0               
                      than the max                         
 ```
+
+#### Maximum Line Width
+
+You can set a hard maximum line width using the `maxLineWidth` option.
+Beyond this value data is unceremoniously truncated with no truncation
+marker.
+
+This can either be a number or 'auto' to set the value to the width of
+stdout.
+
+Setting this value to 'auto' prevent TTY-imposed line-wrapping when
+lines exceed the screen width.
 
 #### Truncating Column Cells Instead of Wrapping
 
