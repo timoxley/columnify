@@ -434,6 +434,25 @@ module-one               some description                   0.0.1
 这是一个很长的名字的模块 这真的是一个描述的内容这个描述很长 0.3.3
 ```
 
+## Contributions
+
+```
+ project  : columnify
+ repo age : 1 year, 2 months
+ active   : 32 days
+ commits  : 120
+ files    : 54
+ authors  :
+    90	Tim Oxley           75.0%
+     8	Tim                 6.7%
+     7	Arjun Mehta         5.8%
+     6	Dany                5.0%
+     5	Wei Gao             4.2%
+     2	Dany Shaanan        1.7%
+     1	Seth Miller         0.8%
+     1	Isaac Z. Schlueter  0.8%
+```
+
 ## License
 
 MIT
