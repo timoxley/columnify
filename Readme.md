@@ -1,5 +1,8 @@
 # columnify
 
+[![NPM](https://nodei.co/npm/columnify.png?downloads=true&downloadRank=true&stars=true&chrome)](https://nodei.co/npm-dl/columnify/)
+[![NPM](https://nodei.co/npm-dl/columnify.png?months=3&height=3&chrome)](https://nodei.co/npm/columnify/)
+
 [![Build Status](https://travis-ci.org/timoxley/columnify.png?branch=master)](https://travis-ci.org/timoxley/columnify)
 [![NPM Version](https://img.shields.io/npm/v/columnify.svg?style=flat)](https://npmjs.org/package/columnify)
 [![License](http://img.shields.io/npm/l/columnify.svg?style=flat)](LICENSE)
