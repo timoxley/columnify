@@ -13,9 +13,9 @@
   "license": "MIT",
   "devDependencies": {
     "babel": "^4.6.6",
-    "chalk": "^0.5.1",
-    "tap-spec": "^2.2.0",
-    "tape": "^3.4.0"
+    "chalk": "^1.0.0",
+    "tap-spec": "^2.2.2",
+    "tape": "^3.5.0"
   },
   "repository": {
     "type": "git",
