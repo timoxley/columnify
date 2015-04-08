@@ -369,6 +369,15 @@ var columns = columnify(data, {
 })
 ```
 
+This also works well for hiding a single column header, like an `id` column:
+```javascript
+var columns = columnify(data, {
+  config: {
+    id: { showHeaders: false }
+  }
+})
+```
+
 ### Transforming Column Data and Headers
 If you need to modify the presentation of column content or heading content there are two useful options for doing that: `dataTransform` and `headerTransform`. Both of these take a function and need to return a valid string.
 
