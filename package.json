@@ -12,10 +12,10 @@
   "author": "Tim Oxley",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.6.4",
-    "chalk": "^1.0.0",
+    "babel": "^5.8.21",
+    "chalk": "^1.1.0",
     "tap-spec": "^4.0.2",
-    "tape": "^4.0.0"
+    "tape": "^4.0.3"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/timoxley/columnify",
   "dependencies": {
-    "strip-ansi": "^2.0.1",
+    "strip-ansi": "^3.0.0",
     "wcwidth": "^1.0.0"
   },
   "directories": {
