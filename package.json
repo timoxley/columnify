@@ -12,7 +12,7 @@
   "author": "Tim Oxley",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.8.21",
+    "babel": "^6.0.0",
     "chalk": "^1.1.0",
     "tap-spec": "^4.0.2",
     "tape": "^4.0.3"
