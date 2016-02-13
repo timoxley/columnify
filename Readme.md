@@ -450,19 +450,20 @@ module-one               some description                   0.0.1
 
 ```
  project  : columnify
- repo age : 1 year, 2 months
- active   : 32 days
- commits  : 120
- files    : 54
+ repo age : 2 years, 2 months
+ active   : 38 days
+ commits  : 148
+ files    : 56
  authors  :
-    90	Tim Oxley           75.0%
-     8	Tim                 6.7%
-     7	Arjun Mehta         5.8%
-     6	Dany                5.0%
-     5	Wei Gao             4.2%
-     2	Dany Shaanan        1.7%
-     1	Seth Miller         0.8%
-     1	Isaac Z. Schlueter  0.8%
+   114	Tim Oxley           77.0%
+     8	Tim                 5.4%
+     7	Arjun Mehta         4.7%
+     6	Dany                4.1%
+     5	Wei Gao             3.4%
+     4	Matias Singers      2.7%
+     2	Dany Shaanan        1.4%
+     1	Seth Miller         0.7%
+     1	Isaac Z. Schlueter  0.7%
 ```
 
 ## License
