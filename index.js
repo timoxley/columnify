@@ -100,7 +100,7 @@ module.exports = function(items, options = {}) {
     let column = columns[columnName]
     items = items.map((item, index) => {
       let col = Object.create(column)
-      item[columnName] = column.dataTransform(item[columnName], col, index)
+      item[columnName] = column.dataTransform(item[columnName], col, index, columnName)
 
       let changedKeys = Object.keys(col)
       // disable default heading transform if we wrote to column.name
