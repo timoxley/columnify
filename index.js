@@ -76,6 +76,24 @@ module.exports = function(items, options = {}) {
     column.align = column.align || 'left'
   })
 
+  // transform data cells
+  columnNames.forEach(columnName => {
+    let column = columns[columnName]
+    items = items.map((item, index) => {
+      let col = Object.create(column)
+      item[columnName] = column.dataTransform(item[columnName], col, index)
+
+      let changedKeys = Object.keys(col)
+      // disable default heading transform if we wrote to column.name
+      if (changedKeys.indexOf('name') !== -1) {
+        if (column.headingTransform !== DEFAULT_HEADING_TRANSFORM) return
+        column.headingTransform = heading => heading
+      }
+      changedKeys.forEach(key => column[key] = col[key])
+      return item
+    })
+  })
+
   // sanitize data
   items = items.map(item => {
     let result = Object.create(null)
@@ -93,24 +111,6 @@ module.exports = function(items, options = {}) {
       }
     })
     return result
-  })
-
-  // transform data cells
-  columnNames.forEach(columnName => {
-    let column = columns[columnName]
-    items = items.map((item, index) => {
-      let col = Object.create(column)
-      item[columnName] = column.dataTransform(item[columnName], col, index)
-
-      let changedKeys = Object.keys(col)
-      // disable default heading transform if we wrote to column.name
-      if (changedKeys.indexOf('name') !== -1) {
-        if (column.headingTransform !== DEFAULT_HEADING_TRANSFORM) return
-        column.headingTransform = heading => heading
-      }
-      changedKeys.forEach(key => column[key] = col[key])
-      return item
-    })
   })
 
   // add headers
