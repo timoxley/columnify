@@ -379,7 +379,7 @@ var columns = columnify(data, {
 ```
 
 ### Transforming Column Data and Headers
-If you need to modify the presentation of column content or heading content there are two useful options for doing that: `dataTransform` and `headerTransform`. Both of these take a function and need to return a valid string.
+If you need to modify the presentation of column content or heading content there are two useful options for doing that: `dataTransform` and `headingTransform`. Both of these take a function and need to return a valid string.
 
 ```javascript
 var columns = columnify([{
@@ -391,6 +391,9 @@ var columns = columnify([{
 }], {
     dataTransform: function(data) {
         return data.toLowerCase()
+    },
+    headingTransform: function(heading) {
+        return heading.toLowerCase()
     },
     config: {
         name: {
@@ -404,7 +407,7 @@ var columns = columnify([{
 ```
 #### Output:
 ```
-*MODULE NAME* DESCRIPTION                           
+*MODULE NAME* description                           
 mod1          some description text.                
 module-two    some slightly longer description text.
 ```
