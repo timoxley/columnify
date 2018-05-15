@@ -392,6 +392,9 @@ var columns = columnify([{
     dataTransform: function(data) {
         return data.toLowerCase()
     },
+    headingTransform: function(heading) {
+        return heading.toLowerCase()
+    },
     config: {
         name: {
             headingTransform: function(heading) {
@@ -404,7 +407,7 @@ var columns = columnify([{
 ```
 #### Output:
 ```
-*MODULE NAME* DESCRIPTION                           
+*MODULE NAME* description                           
 mod1          some description text.                
 module-two    some slightly longer description text.
 ```
