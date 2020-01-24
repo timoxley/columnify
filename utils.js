@@ -167,16 +167,14 @@ function truncateString(str, max) {
 
   if(max == Infinity) return str
 
-  var i = 0
-  var wwidth = 0
+  var i = 0;
+  var truncatedStr = '';
   while (i < str.length) {
-    var w = wcwidth(str.charAt(i))
-    if(w + wwidth > max)
-      break
-    wwidth += w
-    ++i
+    truncatedStr += str[i];
+    if (wcwidth(truncatedStr) >= max) break;
+    ++i;
   }
-  return str.slice(0, i)
+  return truncatedStr;
 }
 
 
