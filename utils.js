@@ -1,6 +1,6 @@
-"use strict"
+'use strict';
 
-var wcwidth = require('./width')
+var wcwidth = require('./width');
 
 /**
  * repeat string `str` up to total length of `len`
@@ -10,7 +10,9 @@ var wcwidth = require('./width')
  */
 
 function repeatString(str, len) {
-  return Array.apply(null, {length: len + 1}).join(str).slice(0, len)
+  return Array.apply(null, {length: len + 1})
+    .join(str)
+    .slice(0, len);
 }
 
 /**
@@ -24,11 +26,11 @@ function repeatString(str, len) {
  */
 
 function padRight(str, max, chr) {
-  str = str != null ? str : ''
-  str = String(str)
-  var length = max - wcwidth(str)
-  if (length <= 0) return str
-  return str + repeatString(chr || ' ', length)
+  str = str != null ? str : '';
+  str = String(str);
+  var length = max - wcwidth(str);
+  if (length <= 0) return str;
+  return str + repeatString(chr || ' ', length);
 }
 
 /**
@@ -42,13 +44,17 @@ function padRight(str, max, chr) {
  */
 
 function padCenter(str, max, chr) {
-  str = str != null ? str : ''
-  str = String(str)
-  var length = max - wcwidth(str)
-  if (length <= 0) return str
-  var lengthLeft = Math.floor(length/2)
-  var lengthRight = length - lengthLeft
-  return repeatString(chr || ' ', lengthLeft) + str + repeatString(chr || ' ', lengthRight)
+  str = str != null ? str : '';
+  str = String(str);
+  var length = max - wcwidth(str);
+  if (length <= 0) return str;
+  var lengthLeft = Math.floor(length / 2);
+  var lengthRight = length - lengthLeft;
+  return (
+    repeatString(chr || ' ', lengthLeft) +
+    str +
+    repeatString(chr || ' ', lengthRight)
+  );
 }
 
 /**
@@ -62,11 +68,11 @@ function padCenter(str, max, chr) {
  */
 
 function padLeft(str, max, chr) {
-  str = str != null ? str : ''
-  str = String(str)
-  var length = max - wcwidth(str)
-  if (length <= 0) return str
-  return repeatString(chr || ' ', length) + str
+  str = str != null ? str : '';
+  str = String(str);
+  var length = max - wcwidth(str);
+  if (length <= 0) return str;
+  return repeatString(chr || ' ', length) + str;
 }
 
 /**
@@ -80,22 +86,28 @@ function padLeft(str, max, chr) {
 
 function splitIntoLines(str, max) {
   function _splitIntoLines(str, max) {
-    return str.trim().split(' ').reduce(function(lines, word) {
-      var line = lines[lines.length - 1]
-      if (line && wcwidth(line.join(' ')) + wcwidth(word) < max) {
-        lines[lines.length - 1].push(word) // add to line
-      }
-      else lines.push([word]) // new line
-      return lines
-    }, []).map(function(l) {
-      return l.join(' ')
-    })
+    return str
+      .trim()
+      .split(' ')
+      .reduce(function(lines, word) {
+        var line = lines[lines.length - 1];
+        if (line && wcwidth(line.join(' ')) + wcwidth(word) < max) {
+          lines[lines.length - 1].push(word); // add to line
+        } else lines.push([word]); // new line
+        return lines;
+      }, [])
+      .map(function(l) {
+        return l.join(' ');
+      });
   }
-  return str.split('\n').map(function(str) {
-    return _splitIntoLines(str, max)
-  }).reduce(function(lines, line) {
-    return lines.concat(line)
-  }, [])
+  return str
+    .split('\n')
+    .map(function(str) {
+      return _splitIntoLines(str, max);
+    })
+    .reduce(function(lines, line) {
+      return lines.concat(line);
+    }, []);
 }
 
 /**
@@ -109,47 +121,46 @@ function splitIntoLines(str, max) {
  */
 
 function splitLongWords(str, max, truncationChar) {
-  str = str.trim()
-  var result = []
-  var words = str.split(' ')
-  var remainder = ''
+  str = str.trim();
+  var result = [];
+  var words = str.split(' ');
+  var remainder = '';
 
-  var truncationWidth = wcwidth(truncationChar)
+  var truncationWidth = wcwidth(truncationChar);
 
   while (remainder || words.length) {
     if (remainder) {
-      var word = remainder
-      remainder = ''
+      var word = remainder;
+      remainder = '';
     } else {
-      var word = words.shift()
+      var word = words.shift();
     }
 
     if (wcwidth(word) > max) {
       // slice is based on length no wcwidth
-      var i = 0
-      var wwidth = 0
-      var limit = max - truncationWidth
+      var i = 0;
+      var wwidth = 0;
+      var limit = max - truncationWidth;
       while (i < word.length) {
-        var w = wcwidth(word.charAt(i))
+        var w = wcwidth(word.charAt(i));
         if (w + wwidth > limit) {
-          break
+          break;
         }
-        wwidth += w
-        ++i
+        wwidth += w;
+        ++i;
       }
 
-      remainder = word.slice(i) // get remainder
+      remainder = word.slice(i); // get remainder
       // save remainder for next loop
 
-      word = word.slice(0, i) // grab truncated word
-      word += truncationChar // add trailing … or whatever
+      word = word.slice(0, i); // grab truncated word
+      word += truncationChar; // add trailing … or whatever
     }
-    result.push(word)
+    result.push(word);
   }
 
-  return result.join(' ')
+  return result.join(' ');
 }
-
 
 /**
  * Truncate `str` into total width `max`
@@ -161,31 +172,28 @@ function splitLongWords(str, max, truncationChar) {
  */
 
 function truncateString(str, max) {
+  str = str != null ? str : '';
+  str = String(str);
 
-  str = str != null ? str : ''
-  str = String(str)
-
-  if(max == Infinity) return str
+  if (max == Infinity) return str;
 
   var i = 0;
   var truncatedStr = '';
   while (i < str.length) {
     truncatedStr += str[i];
-    if (wcwidth(truncatedStr) >= max) break;
+    if (wcwidth(truncatedStr) + 1 >= max) break;
     ++i;
   }
   return truncatedStr;
 }
 
-
-
 /**
  * Exports
  */
 
-module.exports.padRight = padRight
-module.exports.padCenter = padCenter
-module.exports.padLeft = padLeft
-module.exports.splitIntoLines = splitIntoLines
-module.exports.splitLongWords = splitLongWords
-module.exports.truncateString = truncateString
+module.exports.padRight = padRight;
+module.exports.padCenter = padCenter;
+module.exports.padLeft = padLeft;
+module.exports.splitIntoLines = splitIntoLines;
+module.exports.splitLongWords = splitLongWords;
+module.exports.truncateString = truncateString;
