@@ -15,8 +15,11 @@ var data = {
 }
 
 test('width calculated correctly even if ansi colors used.', function(t) {
-  t.plan(1)
+  t.plan(4)
   var expected = fs.readFileSync(__dirname + '/ansi-expected.txt', 'utf8')
-  var actual = columnify(data)
-  t.equal(actual.trim(), expected.trim())
+  var actual = columnify(data, { maxLineWidth: 21 })
+  // each line should be the same, 21 is max width of data without colors
+  expected.split('\n').forEach((expectedLine, i) => {
+    t.equal(actual.split('\n')[i], expectedLine);
+  });
 })
