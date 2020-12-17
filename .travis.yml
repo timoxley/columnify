@@ -1,6 +1,9 @@
 before_install: npm install npm -g
 language: node_js
+arch:
+  - amd64
+  - ppc64le
 node_js:
   - "iojs"
-  - "0.12"
-  - "0.10"
+  - "12"
+  - "10"
