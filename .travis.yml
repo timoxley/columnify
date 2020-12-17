@@ -4,6 +4,5 @@ arch:
   - amd64
   - ppc64le
 node_js:
-  - "iojs"
   - "12"
   - "10"
