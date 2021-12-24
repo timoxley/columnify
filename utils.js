@@ -1,6 +1,4 @@
-'use strict';
-
-var wcwidth = require('./width');
+const wcwidth = require('./wcwidth');
 
 /**
  * repeat string `str` up to total length of `len`

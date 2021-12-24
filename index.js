@@ -1,6 +1,5 @@
-"use strict"
-const stripAnsi = require('strip-ansi')
-const getWCwidth = require('wcwidth')
+const stripAnsi = require('./strip-ansi')
+const getWCwidth = require('./wcwidth')
 
 const {
   padRight,
