@@ -1,6 +1,7 @@
 "use strict"
+const stripAnsi = require('strip-ansi')
+const getWCwidth = require('wcwidth')
 
-const wcwidth = require('./width')
 const {
   padRight,
   padCenter,
@@ -9,6 +10,10 @@ const {
   splitLongWords,
   truncateString
 } = require('./utils')
+
+const wcwidth = function(str) {
+  return getWCwidth(stripAnsi(str))
+}
 
 const DEFAULT_HEADING_TRANSFORM = key => key.toUpperCase()
 
