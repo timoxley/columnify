@@ -10,8 +10,8 @@ const {
   truncateString
 } = require('./utils')
 
-const wcwidth = function(str) {
-  return getWCwidth(stripAnsi(str))
+const wcwidth = async function(str) {
+  return getWCwidth(await stripAnsi(str))
 }
 
 const DEFAULT_HEADING_TRANSFORM = key => key.toUpperCase()
