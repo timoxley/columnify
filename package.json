@@ -42,7 +42,7 @@
   },
   "homepage": "https://github.com/timoxley/columnify",
   "dependencies": {
-    "strip-ansi": "^3.0.0",
+    "strip-ansi": "^6.0.1",
     "wcwidth": "^1.0.0"
   },
   "directories": {
