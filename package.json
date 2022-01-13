@@ -41,6 +41,9 @@
     "url": "https://github.com/timoxley/columnify/issues"
   },
   "homepage": "https://github.com/timoxley/columnify",
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "dependencies": {
     "strip-ansi": "^6.0.1",
     "wcwidth": "^1.0.0"
