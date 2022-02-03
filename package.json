@@ -17,8 +17,7 @@
   "author": "Tim Oxley",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^6.3.26",
-    "babel-cli": "^6.3.17",
+    "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.3.13",
     "chalk": "^1.1.1",
     "tap-spec": "^4.1.1",
