@@ -1,6 +1,6 @@
 {
   "name": "columnify",
-  "version": "1.5.8",
+  "version": "1.6.0",
   "description": "Render data in text columns. Supports in-column text-wrap.",
   "main": "columnify.js",
   "type": "commonjs",
@@ -41,8 +41,12 @@
     "url": "https://github.com/timoxley/columnify/issues"
   },
   "homepage": "https://github.com/timoxley/columnify",
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "dependencies": {
-    "strip-ansi": "^7.0.1"
+    "strip-ansi": "^7.0.1",
+    "wcwidth": "^1.0.0"
   },
   "directories": {
     "test": "test"
