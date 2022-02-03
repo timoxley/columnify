@@ -20,7 +20,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.3.13",
     "chalk": "^1.1.1",
-    "tap-spec": "^4.1.1",
+    "tap-spec": "^5.0.0",
     "tape": "^4.4.0"
   },
   "repository": {
