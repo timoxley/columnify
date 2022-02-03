@@ -1,13 +1,8 @@
 # columnify
 
-[![NPM](https://nodei.co/npm/columnify.png?downloads=true&downloadRank=true&stars=true&chrome)](https://nodei.co/npm-dl/columnify/)
-[![NPM](https://nodei.co/npm-dl/columnify.png?months=3&height=3&chrome)](https://nodei.co/npm/columnify/)
-
-[![Build Status](https://img.shields.io/travis/timoxley/columnify.svg?style=flat)](https://travis-ci.org/timoxley/columnify)
+[![Columnify Unit Tests](https://github.com/timoxley/columnify/actions/workflows/test.yml/badge.svg)](https://github.com/timoxley/columnify/actions/workflows/test.yml)
 [![NPM Version](https://img.shields.io/npm/v/columnify.svg?style=flat)](https://npmjs.org/package/columnify)
 [![License](http://img.shields.io/npm/l/columnify.svg?style=flat)](LICENSE)
-[![Dependency Status](https://david-dm.org/timoxley/columnify.svg)](https://david-dm.org/timoxley/columnify)
-[![devDependency Status](https://david-dm.org/timoxley/columnify/dev-status.svg)](https://david-dm.org/timoxley/columnify#info=devDependencies)
 
 Create text-based columns suitable for console output from objects or
 arrays of objects.
@@ -22,10 +17,10 @@ Designed to [handle sensible wrapping in npm search results](https://github.com/
 
 ![npm-tidy-search](https://f.cloud.github.com/assets/43438/1848959/ae02ad04-76a1-11e3-8255-4781debffc26.gif)
 
-## Installation & Update
+## Installation
 
 ```
-$ npm install --save columnify@latest
+$ npm install columnify
 ```
 
 ## Usage
@@ -453,20 +448,26 @@ module-one               some description                   0.0.1
 
 ```
  project  : columnify
- repo age : 2 years, 2 months
- active   : 38 days
- commits  : 148
- files    : 56
+ repo age : 8 years
+ active   : 47 days
+ commits  : 180
+ files    : 57
  authors  :
-   114	Tim Oxley           77.0%
-     8	Tim                 5.4%
-     7	Arjun Mehta         4.7%
-     6	Dany                4.1%
-     5	Wei Gao             3.4%
-     4	Matias Singers      2.7%
-     2	Dany Shaanan        1.4%
-     1	Seth Miller         0.7%
-     1	Isaac Z. Schlueter  0.7%
+   123	Tim Oxley           68.3%
+    11	Nicholas Hoffman    6.1%
+     8	Tim                 4.4%
+     7	Arjun Mehta         3.9%
+     6	Dany                3.3%
+     5	Tim Kevin Oxley     2.8%
+     5	Wei Gao             2.8%
+     4	Matias Singers      2.2%
+     3	Michael Kriese      1.7%
+     2	sreekanth370        1.1%
+     2	Dany Shaanan        1.1%
+     1	Tim Malone          0.6%
+     1	Seth Miller         0.6%
+     1	andyfusniak         0.6%
+     1	Isaac Z. Schlueter  0.6%
 ```
 
 ## License
