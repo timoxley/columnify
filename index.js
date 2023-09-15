@@ -218,7 +218,10 @@ function createRows(items, columns, columnNames, paddingChr) {
         let val = item[columnName][i] || '' // || '' ensures empty columns get padded
         if (column.align === 'right') row[i].push(padLeft(val, column.width, paddingChr))
         else if (column.align === 'center' || column.align === 'centre') row[i].push(padCenter(val, column.width, paddingChr))
-        else row[i].push(padRight(val, column.width, paddingChr))
+        else {
+          if (i+1 != numLines) row[i].push(padRight(val, column.width, paddingChr))
+          else row[i].push(val)
+        }
       })
     }
     return row
